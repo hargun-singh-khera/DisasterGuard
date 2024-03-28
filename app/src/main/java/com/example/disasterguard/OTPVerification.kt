@@ -25,9 +25,9 @@ class OTPVerification : AppCompatActivity() {
     lateinit var userId: String
     lateinit var storedVerificationId:String
     private lateinit var dbRef: DatabaseReference
-//    lateinit var sharedPreferences: SharedPreferences
+    lateinit var sharedPreferences: SharedPreferences
     lateinit var progressDialog: ProgressDialog
-//    val fileName = "userType"
+    val fileName = "userType"
 
     lateinit var etOtp1: EditText
     lateinit var etOtp2: EditText
@@ -60,11 +60,11 @@ class OTPVerification : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
-//        sharedPreferences = getSharedPreferences(fileName , Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(fileName , Context.MODE_PRIVATE)
 
         storedVerificationId = intent.getStringExtra("storedVerificationId")!!
         userId = intent.getStringExtra("userId")!!
-        Toast.makeText(this, "storedVerificationId otp: ${storedVerificationId}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "storedVerificationId otp: ${storedVerificationId}", Toast.LENGTH_SHORT).show()
 
         btnVerify.setOnClickListener {
             val et1 = etOtp1.text.toString()
@@ -95,13 +95,12 @@ class OTPVerification : AppCompatActivity() {
 
 
     private fun saveUserData(name: String, email: String, number: String) {
-        Toast.makeText(this@OTPVerification, "User details saved", Toast.LENGTH_SHORT).show()
-
-        Toast.makeText(this, "UserId: ${userId}", Toast.LENGTH_SHORT).show()
-//        val editor = sharedPreferences.edit()
-//        editor.putBoolean("isAdmin", false)
-//        editor.putString("userName", name)
-//        editor.apply()
+//        Toast.makeText(this@OTPVerification, "User details saved", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "UserId: ${userId}", Toast.LENGTH_SHORT).show()
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isAdmin", false)
+        editor.putString("userName", name)
+        editor.apply()
         val user = UserModel(userId, name, email, number, false)
         dbRef.child(userId!!).setValue(user).addOnCompleteListener {
             if (it.isSuccessful) {
@@ -125,10 +124,10 @@ class OTPVerification : AppCompatActivity() {
         val et6 = etOtp6.text.toString()
 
         val otp = et1 + et2 + et3 + et4 + et5 + et6
-        Toast.makeText(this@OTPVerification, "OTP Entered: ${otp}", Toast.LENGTH_SHORT).show()
-        Toast.makeText(this@OTPVerification, "Verify user mobile", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@OTPVerification, "OTP Entered: ${otp}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@OTPVerification, "Verify user mobile", Toast.LENGTH_SHORT).show()
         val credential : PhoneAuthCredential = PhoneAuthProvider.getCredential(storedVerificationId, otp)
-        Toast.makeText(this@OTPVerification, "Credentials: ${credential}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@OTPVerification, "Credentials: ${credential}", Toast.LENGTH_SHORT).show()
         signInWithPhoneAuthCredential(credential)
     }
 
@@ -140,10 +139,10 @@ class OTPVerification : AppCompatActivity() {
                 val number = intent.getStringExtra("number")!!
                 val pass = intent.getStringExtra("pass")!!
 
-//                val editor = sharedPreferences.edit()
-//                editor.putString("pass", pass)
+                val editor = sharedPreferences.edit()
+                editor.putString("pass", pass)
 //                Toast.makeText(this@OTPVerification, "OTP Password saved locally", Toast.LENGTH_SHORT).show()
-//                editor.apply()
+                editor.apply()
 
                 saveUserData(name, email, number)
                 hideProgressBar()

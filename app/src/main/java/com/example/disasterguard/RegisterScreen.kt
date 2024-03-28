@@ -41,13 +41,13 @@ class RegisterScreen : AppCompatActivity() {
     lateinit var animBlink: Animation
     lateinit var auth: FirebaseAuth
     private lateinit var dbRef: DatabaseReference
-//    lateinit var sharedPreferences: SharedPreferences
+    lateinit var sharedPreferences: SharedPreferences
     lateinit var progressDialog: ProgressDialog
 
     lateinit var storedVerificationId:String
     lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-//    val fileName = "userType"
+    val fileName = "userType"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +72,7 @@ class RegisterScreen : AppCompatActivity() {
         progressDialog = ProgressDialog(this)
         auth = FirebaseAuth.getInstance()
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
-//        sharedPreferences = getSharedPreferences(fileName , Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(fileName , Context.MODE_PRIVATE)
 
         initializeCallback()
 
@@ -92,7 +92,7 @@ class RegisterScreen : AppCompatActivity() {
         user?.reload()?.addOnCompleteListener { it ->
             if (it.isSuccessful) {
                 val isEmailVerified = user.isEmailVerified
-                Toast.makeText(this@RegisterScreen, "Email Verified onResume: ${isEmailVerified}", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@RegisterScreen, "Email Verified onResume: ${isEmailVerified}", Toast.LENGTH_SHORT).show()
                 checkUserEmailVerification()
             }
         }
@@ -169,9 +169,9 @@ class RegisterScreen : AppCompatActivity() {
             progressDialog.setMessage("Verifying for your email....")
         },1000)
         val isEmailVerified = user?.isEmailVerified
-        Toast.makeText(this@RegisterScreen, "Email verified: ${isEmailVerified}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@RegisterScreen, "Email verified: ${isEmailVerified}", Toast.LENGTH_SHORT).show()
         if (user != null && isEmailVerified!!) {
-            Toast.makeText(this@RegisterScreen, "User Email Verified", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this@RegisterScreen, "User Email Verified", Toast.LENGTH_SHORT).show()
             verifyOtp()
         }
         else {
@@ -180,12 +180,11 @@ class RegisterScreen : AppCompatActivity() {
     }
 
     private fun initializeCallback() {
-        Toast.makeText(this@RegisterScreen, "Callback initialized", Toast.LENGTH_SHORT).show()
         // Callback function for Phone Auth
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             // This method is called when the verification is completed
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                Log.d("Verification Status", "Verification Completed")
+//                Log.d("Verification Status", "Verification Completed")
                 Toast.makeText(this@RegisterScreen, "Verification Completed", Toast.LENGTH_SHORT).show()
                 hideProgressBar()
 
@@ -194,12 +193,12 @@ class RegisterScreen : AppCompatActivity() {
             }
             // Called when verification is failed add log statement to see the exception
             override fun onVerificationFailed(e: FirebaseException) {
-                Log.d("Verification Failed" , "onVerificationFailed $e")
+//                Log.d("Verification Failed" , "onVerificationFailed $e")
                 Toast.makeText(this@RegisterScreen, "Verification Failed", Toast.LENGTH_SHORT).show()
             }
             // On code is sent by the firebase this method is called in here we start a new activity where user can enter the OTP
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
-                Log.d("Code Sent","onCodeSent: $verificationId")
+//                Log.d("Code Sent","onCodeSent: $verificationId")
                 Toast.makeText(this@RegisterScreen, "Code sent", Toast.LENGTH_SHORT).show()
                 storedVerificationId = verificationId
                 resendToken = token
@@ -209,7 +208,7 @@ class RegisterScreen : AppCompatActivity() {
                 val email = etEmail.text.toString()
                 val number = etMobileNumber.text.toString()
                 val pass = etPass.text.toString()
-                Toast.makeText(this@RegisterScreen, "Password: ${pass}", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@RegisterScreen, "Password: ${pass}", Toast.LENGTH_SHORT).show()
                 val userId = auth.currentUser?.uid
 
                 val intent = Intent(applicationContext,OTPVerification::class.java)
@@ -233,18 +232,18 @@ class RegisterScreen : AppCompatActivity() {
     }
 
     private fun verifyOtp() {
-        Toast.makeText(this@RegisterScreen, "Verify otp method", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@RegisterScreen, "Verify otp method", Toast.LENGTH_SHORT).show()
         var number = etMobileNumber.text.trim().toString()
         // get the phone number and append the country cde with it
         number = "+91$number"
-        Toast.makeText(this@RegisterScreen, "Number: ${number}", Toast.LENGTH_SHORT).show()
-        Toast.makeText(this@RegisterScreen, "Calling send verification code", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@RegisterScreen, "Number: ${number}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@RegisterScreen, "Calling send verification code", Toast.LENGTH_SHORT).show()
         sendVerificationCode(number)
     }
 
     // this method sends the verification code and starts the callback of verification which is implemented above in onCreate
     private fun sendVerificationCode(number: String) {
-        Toast.makeText(this@RegisterScreen, "Send verification code", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@RegisterScreen, "Send verification code", Toast.LENGTH_SHORT).show()
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(number) // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -252,7 +251,7 @@ class RegisterScreen : AppCompatActivity() {
             .setCallbacks(callbacks) // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
-        Log.d("CSE227" , "Auth started")
+//        Log.d("CSE227" , "Auth started")
     }
 
     override fun onBackPressed() {
