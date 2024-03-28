@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "994704945449",
+    "project_id": "disasterguard-dbc32",
+    "storage_bucket": "disasterguard-dbc32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994704945449:android:1d51c76199e28aeba28738",
+        "android_client_info": {
+          "package_name": "com.example.disasterguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjc6qvXIIhIwiekLJuzj9wMsx0--arWX8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

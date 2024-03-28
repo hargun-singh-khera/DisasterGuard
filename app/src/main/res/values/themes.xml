@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.DisasterGuard" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!--         <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/cyan</item>
+        <item name="colorPrimaryVariant">@color/cyan</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/cyan</item>
+        <item name="colorSecondaryVariant">@color/cyan</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="actionOverflowButtonStyle">@style/Threedotcolor</item>
+        <!--        <item name="colorPrimary">#FF7440</item>-->
+    </style>
+    <style name="Threedotcolor" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">#FFFFFF</item>
+    </style>
+<!--    <style name="Theme.DisasterGuard" parent="Base.Theme.DisasterGuard" />-->
+</resources>

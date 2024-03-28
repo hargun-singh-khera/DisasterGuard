@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterScreen">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="400dp"
+            android:layout_height="300dp"
+            android:src="@drawable/img4" />
+
+        <TextView
+            android:id="@+id/tvHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:text="Let's Register your Account"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvHeading2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvHeading"
+            android:text="Hello user, you have a grateful journey."
+            android:layout_marginStart="17dp"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Enter your name"
+            android:layout_below="@+id/tvHeading2"
+            android:background="@drawable/edit_background"
+            android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="15dp"
+            android:inputType="textPersonName"
+            android:paddingStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Enter your email"
+            android:layout_below="@id/etName"
+            android:background="@drawable/edit_background"
+            android:drawableStart="@drawable/baseline_mail_24"
+            android:drawablePadding="15dp"
+            android:inputType="textEmailAddress"
+            android:paddingStart="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/etMobileNumber"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:inputType="phone"
+            android:hint="Enter mobile number"
+            android:layout_below="@id/etEmail"
+            android:background="@drawable/edit_background"
+            android:drawableStart="@drawable/baseline_call_24"
+            android:drawablePadding="15dp"
+            android:paddingStart="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/etPass"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Enter password"
+            android:layout_below="@+id/etMobileNumber"
+            android:background="@drawable/edit_background"
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="15dp"
+            android:inputType="textPassword"
+            android:paddingStart="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/etConfPass"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Enter confirm password"
+            android:layout_below="@id/etPass"
+            android:background="@drawable/edit_background"
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="15dp"
+            android:inputType="textPassword"
+            android:paddingStart="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp" />
+
+        <Button
+            android:id="@+id/btnSignup"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_below="@id/etConfPass"
+            android:background="@drawable/rounded_button"
+            android:text="Create an Account"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="40dp" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnSignup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account?" />
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:layout_toRightOf="@id/tv1"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/cyan" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>

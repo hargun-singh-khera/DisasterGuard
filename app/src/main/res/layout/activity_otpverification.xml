@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OTPVerification">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="380dp"
+            android:layout_height="400dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/img6" />
+
+        <TextView
+            android:id="@+id/tvHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Let's Verify your Mobile Number"
+            android:layout_below="@+id/imageView"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvHeading2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvHeading"
+            android:text="Enter the otp we just sent to your number."
+            android:layout_marginStart="20dp"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:id="@+id/etLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvHeading2"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etOtp1"
+                android:background="@drawable/edit_background2"
+                android:cursorVisible="false"
+                android:inputType="number"
+                android:textSize="35sp"
+                android:paddingStart="15dp"
+                android:maxLength="1"
+                android:layout_marginEnd="8dp"
+                android:layout_width="50dp"
+                android:layout_height="60dp" />
+
+            <EditText
+                android:id="@+id/etOtp2"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="number"
+                android:textSize="35sp"
+                android:paddingStart="15dp"
+                android:maxLength="1"
+                android:cursorVisible="false"
+                android:background="@drawable/edit_background2"
+                android:layout_toRightOf="@+id/etOtp1" />
+
+            <EditText
+                android:id="@+id/etOtp3"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="number"
+                android:textSize="35sp"
+                android:paddingStart="15dp"
+                android:maxLength="1"
+                android:cursorVisible="false"
+                android:background="@drawable/edit_background2"
+                android:layout_toRightOf="@+id/etOtp2" />
+
+            <EditText
+                android:id="@+id/etOtp4"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="number"
+                android:textSize="35sp"
+                android:paddingStart="15dp"
+                android:maxLength="1"
+                android:background="@drawable/edit_background2"
+                android:layout_toRightOf="@+id/etOtp3" />
+
+            <EditText
+                android:id="@+id/etOtp5"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:inputType="number"
+                android:textSize="35sp"
+                android:paddingStart="15dp"
+                android:maxLength="1"
+                android:cursorVisible="false"
+                android:background="@drawable/edit_background2"
+                android:layout_toRightOf="@+id/etOtp4" />
+
+            <EditText
+                android:id="@+id/etOtp6"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:cursorVisible="false"
+                android:inputType="number"
+                android:textSize="35sp"
+                android:paddingStart="15dp"
+                android:maxLength="1"
+                android:background="@drawable/edit_background2"
+                android:layout_toRightOf="@+id/etOtp5" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnVerify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verify"
+            android:background="@drawable/rounded_button"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:layout_below="@+id/etLayout" />
+
+    </RelativeLayout>
+
+</ScrollView>
