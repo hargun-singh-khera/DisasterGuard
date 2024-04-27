@@ -20,6 +20,10 @@
         android:title="Rate Us" />
 
     <item
+        android:id="@+id/psensor"
+        android:title="Proximity Sensor" />
+
+    <item
         android:id="@+id/logout"
         android:title="Logout"
         android:icon="@drawable/ic_logout_24" />

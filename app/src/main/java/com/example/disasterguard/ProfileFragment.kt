@@ -146,7 +146,7 @@ class ProfileFragment : Fragment() {
 
                 btnUpload.visibility = View.GONE
 
-                Toast.makeText(requireContext(), "Uploading your image...", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Uploading your image...", Toast.LENGTH_SHORT).show()
                 updateUserDetails(name, email, mobile)
             } else {
                 inEditMode = true
@@ -177,6 +177,8 @@ class ProfileFragment : Fragment() {
 
     private fun getUserImage() {
 //        Toast.makeText(requireContext(), "Inside of get User Image", Toast.LENGTH_SHORT).show()
+//        val currentUserId = auth.currentUser?.uid
+//        Toast.makeText(requireContext(), "Id: ${currentUserId}", Toast.LENGTH_SHORT).show()
         showProgressBar()
         progressDialog.setTitle("Please Wait")
         progressDialog.setMessage("Loading your profile image...")
@@ -204,7 +206,7 @@ class ProfileFragment : Fragment() {
             hideProgressBar()
         } .addOnFailureListener {
             hideProgressBar()
-            Toast.makeText(requireContext(), "Failed to retrieve the image", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(), "Failed to retrieve the image", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -217,7 +219,7 @@ class ProfileFragment : Fragment() {
 
     private fun showProgressBar() {
         progressDialog = ProgressDialog(requireActivity())
-        progressDialog.setTitle("Please Wait")
+        progressDialog.setTitle("Uploading")
         progressDialog.setMessage("Uploading your image...")
         progressDialog.setCancelable(false)
         progressDialog.show()
@@ -239,13 +241,13 @@ class ProfileFragment : Fragment() {
                     Toast.makeText(requireContext(), "Image Uploaded", Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
                     hideProgressBar()
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), " " + it.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
         else {
             hideProgressBar()
-            Toast.makeText(requireContext(), "File uri null found", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(), "File uri null found", Toast.LENGTH_SHORT).show()
         }
     }
 

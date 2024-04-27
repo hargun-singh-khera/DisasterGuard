@@ -3,12 +3,18 @@ package com.example.disasterguard
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -23,7 +29,11 @@ class UserDashboard : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var bottomNavigationView: BottomNavigationView
     lateinit var fab: FloatingActionButton
+    lateinit var relativeLayout: RelativeLayout
     lateinit var toolbar: Toolbar
+    lateinit var sensorManager: SensorManager
+    lateinit var proximitySensor: Sensor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_dashboard)
@@ -37,6 +47,8 @@ class UserDashboard : AppCompatActivity() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         fab = findViewById(R.id.fab)
 
+        relativeLayout = findViewById(R.id.relativeLayout)
+
         bottomNavHandler()
 
         auth = FirebaseAuth.getInstance()
@@ -44,7 +56,45 @@ class UserDashboard : AppCompatActivity() {
         fab.setOnClickListener {
             shareApp()
         }
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)!!
+
+        if (proximitySensor == null) {
+            Toast.makeText(this, "No proximity sensor found in device", Toast.LENGTH_SHORT).show()
+            finish()
+        } else {
+            sensorManager.registerListener(proximitySensorEventListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }
     }
+
+    var proximitySensorEventListener: SensorEventListener? = object : SensorEventListener {
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+
+        }
+
+        override fun onSensorChanged(event: SensorEvent?) {
+            if (event!!.sensor.type == Sensor.TYPE_PROXIMITY) {
+                if (event.values[0] == 0f) {
+                    showProximityAlert()
+                }
+            }
+        }
+    }
+
+    fun showProximityAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("We have detected that your device is very close to an object. Please take appropriate action to ensure the safety of your device.")
+        builder.setTitle("Alert!")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton("Ok") {
+                dialog, which -> dialog.cancel()
+        }
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
@@ -62,6 +112,9 @@ class UserDashboard : AppCompatActivity() {
             }
             R.id.rate -> {
                 bottomNavigationView.selectedItemId = R.id.rate
+            }
+            R.id.psensor -> {
+                startActivity(Intent(this@UserDashboard, ProximitySensor::class.java))
             }
             R.id.logout -> {
                 logoutAlert()

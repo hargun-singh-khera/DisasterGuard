@@ -2,8 +2,13 @@ package com.example.disasterguard
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -15,6 +20,10 @@ class ResetPassword : AppCompatActivity() {
     lateinit var etConfPass: EditText
     lateinit var btnReset: Button
     lateinit var progressDialog: ProgressDialog
+    lateinit var animBlink: Animation
+    lateinit var imageView: ImageView
+    lateinit var tvHeading: TextView
+    lateinit var tvHeading2: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
@@ -30,10 +39,29 @@ class ResetPassword : AppCompatActivity() {
         etConfPass = findViewById(R.id.etConfPass)
         btnReset = findViewById(R.id.btnReset)
         auth = FirebaseAuth.getInstance()
+//        resetPasswordLayout = findViewById(R.id.resetPasswordLayout)
+        imageView = findViewById(R.id.imageView)
+        tvHeading = findViewById(R.id.tvHeading)
+        tvHeading2 = findViewById(R.id.tvHeading2)
 
         btnReset.setOnClickListener {
             resetUserPassword()
         }
+        showAnimation()
+    }
+
+    private fun showAnimation() {
+        animBlink = AnimationUtils.loadAnimation(this, R.anim.move_up)
+        imageView.startAnimation(animBlink)
+        tvHeading.startAnimation(animBlink)
+        tvHeading2.startAnimation(animBlink)
+        etPass.startAnimation(animBlink)
+        etConfPass.startAnimation(animBlink)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showAnimation()
     }
 
     private fun showProgressBar() {

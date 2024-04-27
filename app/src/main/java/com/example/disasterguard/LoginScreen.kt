@@ -33,8 +33,11 @@ class LoginScreen : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var dbRef: DatabaseReference
     lateinit var animBlink: Animation
+    var isAdmin: Boolean ?= false
+    lateinit var sharedPreferences: SharedPreferences
     lateinit var progressDialog: ProgressDialog
     lateinit var tvForgotPassword: TextView
+    val fileName = "userType"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_screen)
@@ -53,6 +56,7 @@ class LoginScreen : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
 
+        sharedPreferences = getSharedPreferences(fileName , Context.MODE_PRIVATE)
 
         showAnimation()
 
@@ -89,7 +93,7 @@ class LoginScreen : AppCompatActivity() {
 
     private fun showProgressBar() {
         progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Please Wait")
+        progressDialog.setTitle("Signing")
         progressDialog.setMessage("Checking your credentials....")
         progressDialog.setCancelable(false)
         progressDialog.show()
@@ -113,8 +117,7 @@ class LoginScreen : AppCompatActivity() {
                     if (currentUser != null) {
                         val isEmailVerified = auth.currentUser?.isEmailVerified
                         if (isEmailVerified!!) {
-                            startActivity(Intent(this@LoginScreen, UserDashboard::class.java))
-                            finish()
+                            checkUserAndLogin(email)
                             hideProgressBar()
                         }
                         else {
@@ -133,6 +136,36 @@ class LoginScreen : AppCompatActivity() {
             }
         }
     }
+    private fun checkUserAndLogin(email: String) {
+        dbRef.orderByChild("userEmail").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+//                    Toast.makeText(this@LoginScreen, "Email: ${email}", Toast.LENGTH_SHORT).show()
+                    for (userSnap in snapshot.children) {
+//                        Toast.makeText(this@LoginScreen, "How many in loop", Toast.LENGTH_SHORT).show()
+                        val user = userSnap.getValue(UserModel::class.java)
+                        isAdmin = user?.userAdmin
+                        // saving the userType for further login process of app
+                        val editor = sharedPreferences.edit()
+                        editor.putBoolean("isAdmin", isAdmin!!)
+                        editor.putString("userName", user?.userName)
+                        editor.apply()
+                        if (isAdmin!!) {
+//                            Toast.makeText(this@LoginScreen, "Admin User", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@LoginScreen, AdminDashboard::class.java))
+                            finish()
+                        } else {
+//                            Toast.makeText(this@LoginScreen, "Normal User", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@LoginScreen, UserDashboard::class.java))
+                            finish()
+                        }
+                    }
+                }
+            }
 
-
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
 }
