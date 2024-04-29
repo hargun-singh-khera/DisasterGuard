@@ -140,7 +140,7 @@ class LoginScreen : AppCompatActivity() {
         dbRef.orderByChild("userEmail").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-//                    Toast.makeText(this@LoginScreen, "Email: ${email}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginScreen, "Email: ${email}", Toast.LENGTH_SHORT).show()
                     for (userSnap in snapshot.children) {
 //                        Toast.makeText(this@LoginScreen, "How many in loop", Toast.LENGTH_SHORT).show()
                         val user = userSnap.getValue(UserModel::class.java)
@@ -151,11 +151,11 @@ class LoginScreen : AppCompatActivity() {
                         editor.putString("userName", user?.userName)
                         editor.apply()
                         if (isAdmin!!) {
-//                            Toast.makeText(this@LoginScreen, "Admin User", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginScreen, "Admin User", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginScreen, AdminDashboard::class.java))
                             finish()
                         } else {
-//                            Toast.makeText(this@LoginScreen, "Normal User", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginScreen, "Normal User", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginScreen, UserDashboard::class.java))
                             finish()
                         }

@@ -31,13 +31,13 @@
                 android:id="@+id/tvHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Support Ticket Form"
+                android:text="Report Incident"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/poppins_light"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="26sp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
@@ -46,52 +46,51 @@
                 android:layout_below="@+id/tvHeading"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="40dp"
                 android:layout_marginTop="10dp"
                 app:cardElevation="10dp"
-                app:cardCornerRadius="20dp">
+                app:cardCornerRadius="10dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tvLaptopModel"
+                        android:id="@+id/tvTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="15dp"
                         android:textSize="18sp"
-                        android:text="Laptop Model" />
+                        android:text="Incident Type" />
 
-                    <EditText
-                        android:id="@+id/etLaptopModel"
+                    <Spinner
+                        android:id="@+id/dropdownIncidentType"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
-                        android:background="@drawable/edit_background2"
-                        android:layout_below="@+id/tvLaptopModel"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvTitle"
                         android:paddingStart="20dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginTop="8dp"/>
 
                     <TextView
-                        android:id="@+id/tvLaptopProblem"
+                        android:id="@+id/tvDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="20dp"
-                        android:layout_below="@+id/etLaptopModel"
+                        android:layout_below="@+id/dropdownIncidentType"
                         android:textSize="18sp"
-                        android:text="Description of the Problem" />
+                        android:text="Description" />
 
                     <EditText
-                        android:id="@+id/etLaptopProblem"
+                        android:id="@+id/etDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter your problem description here..."
+                        android:hint="Enter incident description"
                         android:background="@drawable/edit_background2"
-                        android:layout_below="@+id/tvLaptopProblem"
+                        android:layout_below="@+id/tvDescription"
                         android:minLines="5"
                         android:gravity="top|start"
                         android:paddingTop="7dp"
@@ -101,12 +100,106 @@
                         android:layout_marginTop="8dp"/>
 
                     <TextView
-                        android:id="@+id/tvLaptopImage"
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/etDescription"
+                        android:textSize="18sp"
+                        android:text="Location" />
+
+                    <EditText
+                        android:id="@+id/etLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:background="@drawable/edit_background2"
+                        android:layout_below="@+id/tvLocation"
+                        android:paddingStart="20dp"
+                        android:hint="Enter incident location"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/etLocation"
+                        android:textSize="18sp"
+                        android:text="Date" />
+
+                    <EditText
+                        android:id="@+id/etDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:background="@drawable/edit_background2"
+                        android:layout_below="@+id/tvDate"
+                        android:paddingStart="20dp"
+                        android:hint="Date of incident"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/etDate"
+                        android:textSize="18sp"
+                        android:text="Time" />
+
+                    <EditText
+                        android:id="@+id/etTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:background="@drawable/edit_background2"
+                        android:layout_below="@+id/tvTime"
+                        android:paddingStart="20dp"
+                        android:hint="Time of incident"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvEmergencyLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/etTime"
+                        android:textSize="18sp"
+                        android:text="Emergency Level" />
+
+                    <Spinner
+                        android:id="@+id/dropdownEmergency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvEmergencyLevel"
+                        android:paddingStart="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_marginTop="20dp"
-                        android:layout_below="@+id/etLaptopProblem"
+                        android:layout_below="@+id/dropdownEmergency"
                         android:textSize="18sp"
                         android:text="Upload Image" />
 
@@ -114,22 +207,22 @@
                         android:id="@+id/ivImgUpload"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
-                        android:layout_below="@+id/tvLaptopImage"
+                        android:layout_below="@+id/tvImage"
                         android:backgroundTint="#16D1CBCB"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="20dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/img"
-                        android:src="@drawable/img7" />
+                        android:background="@drawable/edit_background2"
+                        android:src="@drawable/img18" />
 
                     <Button
                         android:id="@+id/btnSubmitRequest"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:background="@drawable/rounded_button"
-                        android:text="Submit Request"
+                        android:text="Submit"
                         android:layout_below="@+id/ivImgUpload"
                         android:layout_marginBottom="40dp"
                         android:layout_marginStart="20dp"

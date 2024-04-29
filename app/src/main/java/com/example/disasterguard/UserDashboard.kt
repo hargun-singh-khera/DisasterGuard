@@ -95,6 +95,25 @@ class UserDashboard : AppCompatActivity() {
         alertDialog.show()
     }
 
+    override fun onBackPressed() {
+//        exitAlert()
+        super.onBackPressed()
+    }
+
+    fun exitAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure you want to close this app?")
+        builder.setTitle("Exit Alert!")
+        builder.setCancelable(false)
+        builder.setPositiveButton("Yes") {
+                dialog, which -> finish()
+        }
+        builder.setNegativeButton("No") {
+                dialog, which -> dialog.cancel()
+        }
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)

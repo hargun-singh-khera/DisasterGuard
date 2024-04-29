@@ -21,15 +21,17 @@ class IntroScreen : AppCompatActivity() {
         btnStart = findViewById(R.id.btnStart)
         auth = FirebaseAuth.getInstance()
         sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE)
-
+        val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
+//        Toast.makeText(this, "isAdmin: ${isAdmin}", Toast.LENGTH_SHORT).show()
+        val currentUser = auth.currentUser
+//        Toast.makeText(this, "${currentUser}", Toast.LENGTH_SHORT).show()
         val isVisited = sharedPreferences.getBoolean("homeVisited", false)
 
-        val currentUser = auth.currentUser
         if (currentUser != null) {
-//            if (isAdmin) {
-//                startActivity(Intent(this, AdminDashboard::class.java))
-//            }
-            if (currentUser.isEmailVerified){
+            if (isAdmin) {
+                startActivity(Intent(this, AdminDashboard::class.java))
+            }
+            else if (currentUser.isEmailVerified){
                 startActivity(Intent(this, UserDashboard::class.java))
             }
             else {

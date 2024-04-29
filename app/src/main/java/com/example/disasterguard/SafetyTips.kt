@@ -17,7 +17,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class DisasterGuides : AppCompatActivity() {
+class SafetyTips : AppCompatActivity() {
     lateinit var animBlink: Animation
     lateinit var tvHeading: TextView
     lateinit var cardViewEarthquake: CardView
@@ -28,7 +28,7 @@ class DisasterGuides : AppCompatActivity() {
     lateinit var btnHurricaneGuide: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_disaster_guides)
+        setContentView(R.layout.activity_safety_tips)
 
         tvHeading = findViewById(R.id.tvHeading)
         cardViewEarthquake = findViewById(R.id.cardViewEarthquake)
@@ -39,7 +39,7 @@ class DisasterGuides : AppCompatActivity() {
         btnHurricaneGuide = findViewById(R.id.btnHurricaneGuide)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle("Disaster Guides")
+        toolbar.setTitle("Safety Tips")
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             finish()
@@ -47,15 +47,15 @@ class DisasterGuides : AppCompatActivity() {
 
 
         btnEarthquakeGuide.setOnClickListener {
-            startNewActivity("https://www.cdc.gov/disasters/earthquakes/prepared.html")
+            startNewActivity("https://www.ready.gov/earthquakes")
         }
 
         btnFloodGuide.setOnClickListener {
-            startNewActivity("https://www.cdc.gov/disasters/floods/readiness.html")
+            startNewActivity("https://www.ready.gov/floods")
         }
 
         btnHurricaneGuide.setOnClickListener {
-            startNewActivity("https://www.cdc.gov/disasters/hurricanes/before.html")
+            startNewActivity("https://www.ready.gov/hurricanes")
         }
 
         showAnimation()

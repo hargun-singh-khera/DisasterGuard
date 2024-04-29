@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/appLogo"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:paddingTop="10dp"
         android:layout_centerInParent="true"
         android:src="@drawable/img"
@@ -19,7 +19,7 @@
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DisasterGuard"
+        android:text="Disaster Guard"
         android:layout_below="@+id/appLogo"
         android:layout_centerHorizontal="true"
         android:textSize="28sp"

@@ -11,14 +11,18 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TicketAdapter(val context: Context, val resource: Int, val objects: ArrayList<RequestModel>, val ticketBitmapMap: HashMap<String, Bitmap>) : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
+class TicketAdapter(val context: Context, val resource: Int, val objects: ArrayList<RequestModel>) : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
     class ViewHolder(itemView: View, clickListener: onItemClickListener) : RecyclerView.ViewHolder(itemView)
     {
         val imageView = itemView.findViewById<ImageView>(R.id.imageView)
-        val tvTicketId = itemView.findViewById<TextView>(R.id.tvTicketId)
-        val tvProblemType = itemView.findViewById<TextView>(R.id.tvProblemType)
-        val tvLaptopModel = itemView.findViewById<TextView>(R.id.tvLaptopModel)
-        val tvStatus = itemView.findViewById<TextView>(R.id.tvStatus)
+        val tvHeading = itemView.findViewById<TextView>(R.id.tvHeading)
+        val tvEmergencyLevelStatus = itemView.findViewById<TextView>(R.id.tvEmergencyLevelStatus)
+        val tvProblemDesc = itemView.findViewById<TextView>(R.id.tvProblemDesc)
+        val tvLocation = itemView.findViewById<TextView>(R.id.tvLocation)
+        val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
+        val tvTime = itemView.findViewById<TextView>(R.id.tvTime)
+//        val btnResolve = itemView.findViewById<TextView>(R.id.btnResolve)
+
 
         init {
             itemView.setOnClickListener {
@@ -48,17 +52,14 @@ class TicketAdapter(val context: Context, val resource: Int, val objects: ArrayL
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
         val myObj = objects[position]
-        holder.imageView.setImageBitmap(ticketBitmapMap[myObj.ticketId])
-//        holder.imageView.setImageResource(R.drawable.img8)
-        holder.tvTicketId.text = "Ticket ID: ${myObj.ticketId}"
-        holder.tvProblemType.text = "Problem: ${myObj.problemDesc}"
-        holder.tvLaptopModel.text = "Model: ${myObj.laptopModel}"
-        if (myObj.reqCompleted!!) {
-            holder.tvStatus.text = "Completed"
-        }
-        else {
-            holder.tvStatus.text = "Pending"
-        }
-//        notifyDataSetChanged()
+
+
+        holder.tvHeading.text = "${myObj.incidentType} Incident"
+        holder.tvEmergencyLevelStatus.text = "${myObj.emergencyLevel}"
+        holder.tvProblemDesc.text = "${myObj.incidentDesc}"
+        holder.tvLocation.text = "Location: ${myObj.incidentLocation}"
+        holder.tvDate.text = "Date: ${myObj.incidentDate}"
+        holder.tvTime.text = "Time: ${myObj.incidentTime}"
+
     }
 }

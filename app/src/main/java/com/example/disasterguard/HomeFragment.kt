@@ -24,7 +24,8 @@ class HomeFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var cardViewSupportTicket: CardView
     lateinit var cardViewGuide: CardView
-    lateinit var cardViewSoftware: CardView
+    lateinit var cardViewContacts: CardView
+    lateinit var cardViewTips: CardView
     val fileName = "userType"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,8 @@ class HomeFragment : Fragment() {
         tvUserName = view.findViewById(R.id.tvUserName)
         btnTrackReq = view.findViewById(R.id.btnTrackReq)
         cardViewGuide = view.findViewById(R.id.cardViewGuide)
-//        cardViewSoftware = view.findViewById(R.id.cardViewSoftware)
+        cardViewContacts = view.findViewById(R.id.cardViewContacts)
+        cardViewTips = view.findViewById(R.id.cardViewTips)
 
 
 //        btnTrackReq.setOnClickListener {
@@ -58,13 +60,13 @@ class HomeFragment : Fragment() {
             startActivity(Intent(requireContext(), DisasterGuides::class.java))
         }
 
-//        cardViewHardware.setOnClickListener {
-//
-//        }
-//
-//        cardViewSoftware.setOnClickListener {
-//
-//        }
+        cardViewContacts.setOnClickListener {
+            startActivity(Intent(requireContext(), EmergencyContact::class.java))
+        }
+
+        cardViewTips.setOnClickListener {
+            startActivity(Intent(requireContext(), SafetyTips::class.java))
+        }
 
         return view
     }

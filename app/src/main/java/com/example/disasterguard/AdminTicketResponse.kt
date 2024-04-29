@@ -32,16 +32,23 @@ class AdminTicketResponse : AppCompatActivity() {
     lateinit var dbRef: DatabaseReference
     lateinit var userId: String
     lateinit var ticketId: String
-    lateinit var laptopModel: String
-    lateinit var problemDesc: String
-    lateinit var submissionDate: String
-    lateinit var tvLaptopModel: TextView
-    lateinit var tvProblem: TextView
+    lateinit var tvIncidentDesc: TextView
+    lateinit var tvLocationDesc: TextView
+    lateinit var tvDateDesc: TextView
+    lateinit var tvTimeDesc: TextView
+    lateinit var tvEmergencyLevelDesc: TextView
     lateinit var tvSubmitted: TextView
+    lateinit var tvProblemDesc: TextView
+
+    lateinit var incidentType: String
+    lateinit var incidentLocation: String
+    lateinit var incidentDesc: String
+    lateinit var incidentDate: String
+    lateinit var incidentTime: String
+    lateinit var emergencyLevel: String
+    lateinit var submissionDate: String
     lateinit var imageView: ImageView
-    lateinit var bitmap: Bitmap
-    lateinit var sharedPreferences: SharedPreferences
-    val fileName = "userType"
+//    lateinit var bitmap: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,21 +56,26 @@ class AdminTicketResponse : AppCompatActivity() {
 
         etResponse = findViewById(R.id.etResponse)
         btnSubmit = findViewById(R.id.btnSubmit)
-        tvLaptopModel = findViewById(R.id.tvLaptopModel)
-        tvProblem = findViewById(R.id.tvProblem)
+        tvIncidentDesc = findViewById(R.id.tvIncidentDesc)
+        tvLocationDesc = findViewById(R.id.tvLocationDesc)
+        tvDateDesc = findViewById(R.id.tvDateDesc)
+        tvTimeDesc = findViewById(R.id.tvTimeDesc)
+        tvEmergencyLevelDesc = findViewById(R.id.tvEmergencyLevelDesc)
+        tvProblemDesc = findViewById(R.id.tvProblemDesc)
         imageView = findViewById(R.id.imageView)
         tvSubmitted = findViewById(R.id.tvSubmitted)
         auth = FirebaseAuth.getInstance()
 
         userId = intent.getStringExtra("userId")!!
         ticketId = intent.getStringExtra("ticketId")!!
-        laptopModel = intent.getStringExtra("laptopModel")!!
-        problemDesc = intent.getStringExtra("problemDesc")!!
+        incidentType = intent.getStringExtra("incidentType")!!
+        incidentLocation = intent.getStringExtra("incidentLocation")!!
+        incidentDesc = intent.getStringExtra("incidentDesc")!!
+        incidentDate = intent.getStringExtra("incidentDate")!!
+        incidentTime = intent.getStringExtra("incidentTime")!!
+        emergencyLevel = intent.getStringExtra("emergencyLevel")!!
+        submissionDate = intent.getStringExtra("submissionDate")!!
 
-        sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE)
-        submissionDate = sharedPreferences.getString("submissionDate", null)!!
-
-        tvSubmitted.text = "Submitted on: ${submissionDate}"
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.setTitle("Ticket ID: ${ticketId}")
@@ -78,11 +90,11 @@ class AdminTicketResponse : AppCompatActivity() {
 ////        // Convert the ByteArray back to a Bitmap object
 //        bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray!!.size)
 
-        val bitmapFilePath = intent.getStringExtra("bitmapPath")
-        if (bitmapFilePath != null) {
-            bitmap = BitmapFactory.decodeFile(bitmapFilePath)
-            // Use the bitmap as needed
-        }
+//        val bitmapFilePath = intent.getStringExtra("bitmapPath")
+//        if (bitmapFilePath != null) {
+//            bitmap = BitmapFactory.decodeFile(bitmapFilePath)
+//            // Use the bitmap as needed
+//        }
 
         setValuesToView()
 
@@ -99,7 +111,7 @@ class AdminTicketResponse : AppCompatActivity() {
             Toast.makeText(this@AdminTicketResponse, "Please enter a response", Toast.LENGTH_SHORT).show()
         }
         else {
-            val request = RequestModel(userId, ticketId, laptopModel, problemDesc, submissionDate, remarks,true)
+            val request = RequestModel(userId, ticketId, incidentType, incidentDesc, incidentLocation, incidentDate, incidentTime, emergencyLevel, submissionDate,true)
             dbRef.child(ticketId!!).setValue(request).addOnSuccessListener {
                 Toast.makeText(this, "Your response has been recorded successfully", Toast.LENGTH_SHORT).show()
                 finish()
@@ -107,15 +119,17 @@ class AdminTicketResponse : AppCompatActivity() {
                 Toast.makeText(this, "Error while responding ${error.message}", Toast.LENGTH_LONG).show()
             }
         }
-//        pushNotification(problemDesc, remarks)
     }
 
     private fun setValuesToView() {
-        tvLaptopModel.text = "Laptop Model: " + laptopModel
-        tvProblem.text = problemDesc
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap)
-        }
+        tvIncidentDesc.text = incidentType
+        tvLocationDesc.text = incidentLocation
+        tvDateDesc.text = incidentDate
+        tvTimeDesc.text = incidentTime
+        tvProblemDesc.text = incidentDesc
+        tvEmergencyLevelDesc.text = emergencyLevel
+
+        tvSubmitted.text = "Submitted on: ${submissionDate}"
 
     }
 }

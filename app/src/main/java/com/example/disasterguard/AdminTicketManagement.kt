@@ -36,10 +36,15 @@ class AdminTicketManagement : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var userId: String
     lateinit var ticketId: String
-    lateinit var laptopModel: String
-    lateinit var problemDesc: String
-    lateinit var bitmap: Bitmap
-    private lateinit var ticketBitmapMap: HashMap<String, Bitmap>
+    lateinit var incidentType: String
+    lateinit var incidentDesc: String
+    lateinit var incidentLocation: String
+    lateinit var incidentDate: String
+    lateinit var incidentTime: String
+    lateinit var emergencyLevel: String
+    lateinit var submissionDate: String
+//    lateinit var bitmap: Bitmap
+//    private lateinit var ticketBitmapMap: HashMap<String, Bitmap>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_ticket_management)
@@ -60,7 +65,7 @@ class AdminTicketManagement : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         tvLoadingData = findViewById(R.id.tvLoadingData)
         progressBar = findViewById(R.id.progressBar)
-        ticketBitmapMap = HashMap()
+//        ticketBitmapMap = HashMap()
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
@@ -108,24 +113,25 @@ class AdminTicketManagement : AppCompatActivity() {
     }
 
     private fun getAllTicketImages(userId: String, ticketId: String) {
-        storageReference = FirebaseStorage.getInstance().getReference("Users/${userId}/Tickets/").child(ticketId)
-        val localFile = File.createTempFile("tempImage", "jpg")
-        storageReference.getFile(localFile).addOnSuccessListener {
-            bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-            Log.d("Bitmap2", bitmap.toString())
-            ticketBitmapMap[ticketId] = bitmap
+//        storageReference = FirebaseStorage.getInstance().getReference("Users/${userId}/Tickets/").child(ticketId)
+//        val localFile = File.createTempFile("tempImage", "jpg")
+//        storageReference.getFile(localFile).addOnSuccessListener {
+//            bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+//            Log.d("Bitmap2", bitmap.toString())
+//            ticketBitmapMap[ticketId] = bitmap
             // Checks if all images are fetched
-            if (ticketBitmapMap.size == ticketList.size) {
+//            if (ticketBitmapMap.size == ticketList.size) {
                 // If all images are fetched, update the adapter
                 updateAdapterWithBitmap()
-            }
-        } .addOnFailureListener {
-            Toast.makeText(this@AdminTicketManagement, "Failed to retrieve the image", Toast.LENGTH_SHORT).show()
-        }
+//            }
+//        }
+//            .addOnFailureListener {
+//            Toast.makeText(this@AdminTicketManagement, "Failed to retrieve the image", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun updateAdapterWithBitmap() {
-        val mAdapter = TicketAdapter(this@AdminTicketManagement, R.layout.ticket_item, ticketList, ticketBitmapMap)
+        val mAdapter = TicketAdapter(this@AdminTicketManagement, R.layout.ticket_item, ticketList)
         recyclerView.adapter = mAdapter
 
         mAdapter.setOnItemClickListener(object : TicketAdapter.onItemClickListener{
@@ -133,34 +139,39 @@ class AdminTicketManagement : AppCompatActivity() {
                 val intent = Intent(this@AdminTicketManagement, AdminTicketResponse::class.java)
                 userId = ticketList[position].userId!!
                 ticketId = ticketList[position].ticketId!!
-                laptopModel = ticketList[position].laptopModel!!
-                problemDesc = ticketList[position].problemDesc!!
-                bitmap = ticketBitmapMap[ticketId]!!
-                Log.d("Bitmap", bitmap.toString())
+                incidentType = ticketList[position].incidentType!!
+                incidentDesc = ticketList[position].incidentDesc!!
+                incidentLocation = ticketList[position].incidentLocation!!
+                incidentDate = ticketList[position].incidentDate!!
+                incidentTime = ticketList[position].incidentTime!!
+                emergencyLevel = ticketList[position].emergencyLevel!!
+                submissionDate = ticketList[position].submissionDate!!
+//                bitmap = ticketBitmapMap[ticketId]!!
+//                Log.d("Bitmap", bitmap.toString())
                 intent.putExtra("userId", userId)
                 intent.putExtra("ticketId", ticketId)
-                intent.putExtra("laptopModel", laptopModel)
-                intent.putExtra("problemDesc", problemDesc)
+                intent.putExtra("incidentType", incidentType)
+                intent.putExtra("incidentDesc", incidentDesc)
+                intent.putExtra("incidentLocation", incidentLocation)
+                intent.putExtra("incidentDate", incidentDate)
+                intent.putExtra("incidentTime", incidentTime)
+                intent.putExtra("emergencyLevel", emergencyLevel)
+                intent.putExtra("submissionDate", submissionDate)
 
-                if (bitmap != null) {
-                    // Convert the Bitmap to a byte array
-                    try {
-//                        val stream = ByteArrayOutputStream()
-//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-//                        val byteArray = stream.toByteArray()
-//                        // Pass the byte array as an extra with the intent
-//                        Log.d("ByteArray", byteArray.toString())
-//                        intent.putExtra("bitmap", byteArray)
-                        val bitmapFile = saveBitmapToFile(bitmap)
-                        intent.putExtra("bitmapPath", bitmapFile.absolutePath)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        Toast.makeText(this@AdminTicketManagement, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
 
-                } else {
-                    Toast.makeText(this@AdminTicketManagement, "Bitmap is null", Toast.LENGTH_SHORT).show()
-                }
+//                if (bitmap != null) {
+//                    // Convert the Bitmap to a byte array
+//                    try {
+//                        val bitmapFile = saveBitmapToFile(bitmap)
+//                        intent.putExtra("bitmapPath", bitmapFile.absolutePath)
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                        Toast.makeText(this@AdminTicketManagement, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                } else {
+//                    Toast.makeText(this@AdminTicketManagement, "Bitmap is null", Toast.LENGTH_SHORT).show()
+//                }
 
                 startActivity(intent)
             }
@@ -172,19 +183,17 @@ class AdminTicketManagement : AppCompatActivity() {
     }
 
 
-    private fun saveBitmapToFile(bitmap: Bitmap): File {
-        val file = File.createTempFile("tempImage", ".jpg")
-        val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.close()
-        return file
-    }
+//    private fun saveBitmapToFile(bitmap: Bitmap): File {
+//        val file = File.createTempFile("tempImage", ".jpg")
+//        val outputStream = FileOutputStream(file)
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+//        outputStream.close()
+//        return file
+//    }
 
     override fun onResume() {
         super.onResume()
         getAllTickets()
     }
-
-
 
 }

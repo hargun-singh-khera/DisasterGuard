@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DisasterGuides">
+    tools:context=".SafetyTips">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -30,7 +30,7 @@
                 android:id="@+id/tvHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Disaster Preparedness Guides"
+                android:text="Disaster Safety Tips"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="15dp"
@@ -59,21 +59,21 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Earthquake Preparedness"
+                        android:text="Earthquake Safety"
                         android:textSize="19sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Learn how to prepare for and stay safe during earthquakes."
+                        android:text="During an earthquake, remember to drop, cover, and hold on until the shaking stops. Find a safe shelter and stay away from windows."
                         android:textSize="15sp" />
 
                     <Button
                         android:id="@+id/btnEarthquakeGuide"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:text="View Guide"
+                        android:text="Read More"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp" />
 
@@ -102,21 +102,21 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Flood Preparedness"
+                        android:text="Flood Safety"
                         android:textSize="19sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Essential tips to prepare for and handle floods effectively."
+                        android:text="In case of a flood, move to higher ground immediately. Avoid walking or driving through floodwaters."
                         android:textSize="15sp" />
 
                     <Button
                         android:id="@+id/btnFloodGuide"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:text="View Guide"
+                        android:text="Read More"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp" />
 
@@ -131,7 +131,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="40dp"
                 android:layout_below="@+id/cardViewFlood"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp">
@@ -145,21 +145,21 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Hurricane Preparedness"
+                        android:text="Hurricane Safety"
                         android:textSize="19sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Discover essential tips to protect yourself durring hurricanes."
+                        android:text="During a hurricane, prioritize safety by seeking higher ground and refraining from traveling through affected areas."
                         android:textSize="15sp" />
 
                     <Button
                         android:id="@+id/btnHurricaneGuide"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:text="View Guide"
+                        android:text="Read More"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp" />
 

@@ -30,50 +30,156 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="20dp"
                 app:cardElevation="5dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="5dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="15dp">
+                    android:layout_margin="10dp">
 
                     <TextView
-                        android:id="@+id/tvProblemDesc"
+                        android:id="@+id/tvHeading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Problem Description"
+                        android:text="Incident Details"
                         android:layout_marginTop="5dp"
                         android:layout_marginStart="4dp"
                         android:textStyle="bold"
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/tvLaptopModel"
+                        android:id="@+id/tvIncident"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Laptop Model: "
+                        android:text="Incident Type: "
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="4dp"
-                        android:layout_below="@+id/tvProblemDesc" />
+                        android:layout_below="@+id/tvHeading" />
 
                     <TextView
-                        android:id="@+id/tvProblem"
-                        android:layout_below="@+id/tvLaptopModel"
+                        android:id="@+id/tvIncidentDesc"
+                        android:layout_below="@+id/tvHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Earthquake" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Location: "
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_below="@+id/tvIncident" />
+
+                    <TextView
+                        android:id="@+id/tvLocationDesc"
+                        android:layout_below="@+id/tvIncident"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="123 Main St." />
+
+
+                    <TextView
+                        android:id="@+id/tvDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date: "
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_below="@+id/tvLocation" />
+
+                    <TextView
+                        android:id="@+id/tvDateDesc"
+                        android:layout_below="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="April 29, 2024" />
+
+                    <TextView
+                        android:id="@+id/tvTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time: "
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_below="@+id/tvDate" />
+
+                    <TextView
+                        android:id="@+id/tvTimeDesc"
+                        android:layout_below="@+id/tvDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="10:30 AM" />
+
+                    <TextView
+                        android:id="@+id/tvEmergencyLevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Emergency Level: "
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_below="@+id/tvTime" />
+
+                    <TextView
+                        android:id="@+id/tvEmergencyLevelDesc"
+                        android:layout_below="@+id/tvTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#FF001E"
+                        android:text="High" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_below="@+id/tvEmergencyLevel"
+                        android:background="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/tvProblemDesc"
+                        android:layout_below="@+id/tvEmergencyLevel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Lorem Ipsum" />
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="6dp"
+                        android:textSize="16sp"
+                        android:text="A fire brokeout in the downtown area... " />
 
                     <ImageView
                         android:id="@+id/imageView"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="fitXY"
-                        android:layout_below="@+id/tvProblem"
+                        android:layout_below="@+id/tvProblemDesc"
                         android:layout_marginBottom="10dp"
+                        android:visibility="gone"
                         android:layout_marginTop="10dp"
                         android:src="@drawable/img11" />
 
@@ -101,9 +207,102 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="8dp"
                 app:cardElevation="5dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:id="@+id/tvHeading2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Information"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="4dp"
+                        android:textStyle="bold"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name: "
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_below="@+id/tvHeading2" />
+
+                    <TextView
+                        android:id="@+id/tvUserNameDesc"
+                        android:layout_below="@+id/tvHeading2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="John Doe" />
+
+                    <TextView
+                        android:id="@+id/tvUserEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email: "
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_below="@+id/tvUserName" />
+
+                    <TextView
+                        android:id="@+id/tvUserEmailDesc"
+                        android:layout_below="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="johndoe@example.com" />
+
+
+                    <TextView
+                        android:id="@+id/tvUserMobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contact No: "
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_below="@+id/tvUserEmail" />
+
+                    <TextView
+                        android:id="@+id/tvUserMobileDesc"
+                        android:layout_below="@+id/tvUserEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="April 29, 2024" />
+
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="30dp"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="5dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -114,7 +313,7 @@
                         android:id="@+id/tvResponse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Response Form"
+                        android:text="Admin Response"
                         android:layout_marginTop="5dp"
                         android:layout_marginStart="4dp"
                         android:textStyle="bold"
