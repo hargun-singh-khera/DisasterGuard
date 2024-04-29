@@ -2,6 +2,7 @@ package com.example.disasterguard
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +53,15 @@ class TicketAdapter(val context: Context, val resource: Int, val objects: ArrayL
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
         val myObj = objects[position]
+        val level = objects[position].emergencyLevel
 
+        if (level == "High") {
+            holder.tvEmergencyLevelStatus.setTextColor(Color.parseColor("#FF001E"))
+        } else if (level == "Medium") {
+            holder.tvEmergencyLevelStatus.setTextColor(Color.parseColor("#F39C05"))
+        } else {
+            holder.tvEmergencyLevelStatus.setTextColor(Color.parseColor("#44F305"))
+        }
 
         holder.tvHeading.text = "${myObj.incidentType} Incident"
         holder.tvEmergencyLevelStatus.text = "${myObj.emergencyLevel}"

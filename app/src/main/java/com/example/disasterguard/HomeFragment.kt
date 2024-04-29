@@ -40,9 +40,9 @@ class HomeFragment : Fragment() {
         cardViewTips = view.findViewById(R.id.cardViewTips)
 
 
-//        btnTrackReq.setOnClickListener {
-//            startActivity(Intent(requireContext(), UserTrackRequests::class.java))
-//        }
+        btnTrackReq.setOnClickListener {
+            startActivity(Intent(requireContext(), DisasterRequestTracker::class.java))
+        }
 
         auth = FirebaseAuth.getInstance()
         sharedPreferences = requireActivity().getSharedPreferences(fileName, Context.MODE_PRIVATE)

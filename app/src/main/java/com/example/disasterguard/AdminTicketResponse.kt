@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -22,8 +26,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
 
 class AdminTicketResponse : AppCompatActivity() {
     lateinit var etResponse: EditText
@@ -48,7 +58,14 @@ class AdminTicketResponse : AppCompatActivity() {
     lateinit var emergencyLevel: String
     lateinit var submissionDate: String
     lateinit var imageView: ImageView
-//    lateinit var bitmap: Bitmap
+    lateinit var tvUserNameDesc: TextView
+    lateinit var tvUserEmailDesc: TextView
+    lateinit var tvUserMobileDesc: TextView
+
+    lateinit var bitmap: Bitmap
+
+    lateinit var storageReference: StorageReference
+    lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +79,10 @@ class AdminTicketResponse : AppCompatActivity() {
         tvTimeDesc = findViewById(R.id.tvTimeDesc)
         tvEmergencyLevelDesc = findViewById(R.id.tvEmergencyLevelDesc)
         tvProblemDesc = findViewById(R.id.tvProblemDesc)
+        tvUserNameDesc = findViewById(R.id.tvUserNameDesc)
+        tvUserEmailDesc = findViewById(R.id.tvUserEmailDesc)
+        tvUserMobileDesc = findViewById(R.id.tvUserMobileDesc)
+
         imageView = findViewById(R.id.imageView)
         tvSubmitted = findViewById(R.id.tvSubmitted)
         auth = FirebaseAuth.getInstance()
@@ -76,7 +97,6 @@ class AdminTicketResponse : AppCompatActivity() {
         emergencyLevel = intent.getStringExtra("emergencyLevel")!!
         submissionDate = intent.getStringExtra("submissionDate")!!
 
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.setTitle("Ticket ID: ${ticketId}")
         setSupportActionBar(toolbar)
@@ -84,22 +104,11 @@ class AdminTicketResponse : AppCompatActivity() {
             finish()
         }
 
-        // Retrieve the ByteArray from the intent
-//        val byteArray = intent.getByteArrayExtra("bitmapPath")
-////
-////        // Convert the ByteArray back to a Bitmap object
-//        bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray!!.size)
 
-//        val bitmapFilePath = intent.getStringExtra("bitmapPath")
-//        if (bitmapFilePath != null) {
-//            bitmap = BitmapFactory.decodeFile(bitmapFilePath)
-//            // Use the bitmap as needed
-//        }
-
-        setValuesToView()
 
         dbRef = FirebaseDatabase.getInstance().getReference("Users").child(userId!!).child("Requests")
-
+        setValuesToView()
+        
         btnSubmit.setOnClickListener {
             submitResponse()
         }
@@ -122,6 +131,7 @@ class AdminTicketResponse : AppCompatActivity() {
     }
 
     private fun setValuesToView() {
+        showProgressBar()
         tvIncidentDesc.text = incidentType
         tvLocationDesc.text = incidentLocation
         tvDateDesc.text = incidentDate
@@ -129,7 +139,71 @@ class AdminTicketResponse : AppCompatActivity() {
         tvProblemDesc.text = incidentDesc
         tvEmergencyLevelDesc.text = emergencyLevel
 
-        tvSubmitted.text = "Submitted on: ${submissionDate}"
+        if (emergencyLevel == "High") {
+            tvEmergencyLevelDesc.setTextColor(Color.parseColor("#FF001E"))
+        } else if (emergencyLevel == "Medium") {
+            tvEmergencyLevelDesc.setTextColor(Color.parseColor("#F39C05"))
+        } else {
+            tvEmergencyLevelDesc.setTextColor(Color.parseColor("#44F305"))
+        }
 
+        tvSubmitted.text = "Submitted on: ${submissionDate}"
+        getUserDetails()
+
+        storageReference = FirebaseStorage.getInstance().getReference("Users/${userId}/Tickets/").child(ticketId)
+        val localFile = File.createTempFile("tempImage", "jpg")
+        storageReference.getFile(localFile).addOnSuccessListener {
+            bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+            imageView.visibility = View.VISIBLE
+            imageView.setImageBitmap(bitmap)
+            hideProgressBar()
+        } .addOnFailureListener {
+            hideProgressBar()
+        }
+
+    }
+    
+    private fun getUserDetails() {
+        dbRef.child(ticketId).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val ticketData = snapshot.getValue(RequestModel::class.java)
+                    val userId = ticketData?.userId
+                    dbRef = FirebaseDatabase.getInstance().getReference("Users").child(userId!!)
+                    dbRef.addListenerForSingleValueEvent(object: ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                val userData = snapshot.getValue(UserModel::class.java)
+                                val userName = userData?.userName
+                                val userEmail = userData?.userEmail
+                                val userMobile = userData?.userMobileNumber
+                                tvUserNameDesc.text = userName
+                                tvUserEmailDesc.text = userEmail
+                                tvUserMobileDesc.text = userMobile
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+
+                        }
+                    })
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
+    private fun showProgressBar() {
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Loading...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+    }
+
+    private fun hideProgressBar() {
+        progressDialog.hide()
     }
 }

@@ -32,7 +32,6 @@ class AdminTicketManagement : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var ticketList: ArrayList<RequestModel>
     private lateinit var dbRef: DatabaseReference
-    lateinit var storageReference: StorageReference
     lateinit var auth: FirebaseAuth
     lateinit var userId: String
     lateinit var ticketId: String
@@ -43,8 +42,6 @@ class AdminTicketManagement : AppCompatActivity() {
     lateinit var incidentTime: String
     lateinit var emergencyLevel: String
     lateinit var submissionDate: String
-//    lateinit var bitmap: Bitmap
-//    private lateinit var ticketBitmapMap: HashMap<String, Bitmap>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_ticket_management)
@@ -56,17 +53,13 @@ class AdminTicketManagement : AppCompatActivity() {
             finish()
         }
 
-
         getAllTickets()
-
     }
 
     private fun getAllTickets() {
         recyclerView = findViewById(R.id.recyclerView)
         tvLoadingData = findViewById(R.id.tvLoadingData)
         progressBar = findViewById(R.id.progressBar)
-//        ticketBitmapMap = HashMap()
-
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         auth = FirebaseAuth.getInstance()
@@ -88,8 +81,40 @@ class AdminTicketManagement : AppCompatActivity() {
                             val ticket = ticketSnap.getValue(RequestModel::class.java)
                             val reqCompleted = ticket!!.reqCompleted
                             if (reqCompleted == false) {
-                                getAllTicketImages(userSnap.key!!, ticket.ticketId!!)
-                                ticketList.add(ticket!!)
+                                val mAdapter = TicketAdapter(this@AdminTicketManagement, R.layout.ticket_item, ticketList)
+                                recyclerView.adapter = mAdapter
+
+                                mAdapter.setOnItemClickListener(object : TicketAdapter.onItemClickListener{
+                                    override fun onItemClick(position: Int) {
+                                        val intent = Intent(this@AdminTicketManagement, AdminTicketResponse::class.java)
+                                        userId = ticketList[position].userId!!
+                                        ticketId = ticketList[position].ticketId!!
+                                        incidentType = ticketList[position].incidentType!!
+                                        incidentDesc = ticketList[position].incidentDesc!!
+                                        incidentLocation = ticketList[position].incidentLocation!!
+                                        incidentDate = ticketList[position].incidentDate!!
+                                        incidentTime = ticketList[position].incidentTime!!
+                                        emergencyLevel = ticketList[position].emergencyLevel!!
+                                        submissionDate = ticketList[position].submissionDate!!
+
+                                        intent.putExtra("userId", userId)
+                                        intent.putExtra("ticketId", ticketId)
+                                        intent.putExtra("incidentType", incidentType)
+                                        intent.putExtra("incidentDesc", incidentDesc)
+                                        intent.putExtra("incidentLocation", incidentLocation)
+                                        intent.putExtra("incidentDate", incidentDate)
+                                        intent.putExtra("incidentTime", incidentTime)
+                                        intent.putExtra("emergencyLevel", emergencyLevel)
+                                        intent.putExtra("submissionDate", submissionDate)
+
+                                        startActivity(intent)
+                                    }
+                                })
+
+                                progressBar.visibility = View.GONE
+                                tvLoadingData.visibility = View.GONE
+                                recyclerView.visibility = View.VISIBLE
+                                ticketList.add(ticket)
                             }
                         }
                     }
@@ -112,84 +137,7 @@ class AdminTicketManagement : AppCompatActivity() {
         })
     }
 
-    private fun getAllTicketImages(userId: String, ticketId: String) {
-//        storageReference = FirebaseStorage.getInstance().getReference("Users/${userId}/Tickets/").child(ticketId)
-//        val localFile = File.createTempFile("tempImage", "jpg")
-//        storageReference.getFile(localFile).addOnSuccessListener {
-//            bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-//            Log.d("Bitmap2", bitmap.toString())
-//            ticketBitmapMap[ticketId] = bitmap
-            // Checks if all images are fetched
-//            if (ticketBitmapMap.size == ticketList.size) {
-                // If all images are fetched, update the adapter
-                updateAdapterWithBitmap()
-//            }
-//        }
-//            .addOnFailureListener {
-//            Toast.makeText(this@AdminTicketManagement, "Failed to retrieve the image", Toast.LENGTH_SHORT).show()
-//        }
-    }
 
-    private fun updateAdapterWithBitmap() {
-        val mAdapter = TicketAdapter(this@AdminTicketManagement, R.layout.ticket_item, ticketList)
-        recyclerView.adapter = mAdapter
-
-        mAdapter.setOnItemClickListener(object : TicketAdapter.onItemClickListener{
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@AdminTicketManagement, AdminTicketResponse::class.java)
-                userId = ticketList[position].userId!!
-                ticketId = ticketList[position].ticketId!!
-                incidentType = ticketList[position].incidentType!!
-                incidentDesc = ticketList[position].incidentDesc!!
-                incidentLocation = ticketList[position].incidentLocation!!
-                incidentDate = ticketList[position].incidentDate!!
-                incidentTime = ticketList[position].incidentTime!!
-                emergencyLevel = ticketList[position].emergencyLevel!!
-                submissionDate = ticketList[position].submissionDate!!
-//                bitmap = ticketBitmapMap[ticketId]!!
-//                Log.d("Bitmap", bitmap.toString())
-                intent.putExtra("userId", userId)
-                intent.putExtra("ticketId", ticketId)
-                intent.putExtra("incidentType", incidentType)
-                intent.putExtra("incidentDesc", incidentDesc)
-                intent.putExtra("incidentLocation", incidentLocation)
-                intent.putExtra("incidentDate", incidentDate)
-                intent.putExtra("incidentTime", incidentTime)
-                intent.putExtra("emergencyLevel", emergencyLevel)
-                intent.putExtra("submissionDate", submissionDate)
-
-
-//                if (bitmap != null) {
-//                    // Convert the Bitmap to a byte array
-//                    try {
-//                        val bitmapFile = saveBitmapToFile(bitmap)
-//                        intent.putExtra("bitmapPath", bitmapFile.absolutePath)
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                        Toast.makeText(this@AdminTicketManagement, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-//                    }
-//
-//                } else {
-//                    Toast.makeText(this@AdminTicketManagement, "Bitmap is null", Toast.LENGTH_SHORT).show()
-//                }
-
-                startActivity(intent)
-            }
-        })
-
-        recyclerView.visibility = View.VISIBLE
-        progressBar.visibility = View.GONE
-        tvLoadingData.visibility = View.GONE
-    }
-
-
-//    private fun saveBitmapToFile(bitmap: Bitmap): File {
-//        val file = File.createTempFile("tempImage", ".jpg")
-//        val outputStream = FileOutputStream(file)
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-//        outputStream.close()
-//        return file
-//    }
 
     override fun onResume() {
         super.onResume()
