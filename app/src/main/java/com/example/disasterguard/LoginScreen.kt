@@ -140,7 +140,7 @@ class LoginScreen : AppCompatActivity() {
         dbRef.orderByChild("userEmail").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    Toast.makeText(this@LoginScreen, "Email: ${email}", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@LoginScreen, "Email: ${email}", Toast.LENGTH_SHORT).show()
                     for (userSnap in snapshot.children) {
 //                        Toast.makeText(this@LoginScreen, "How many in loop", Toast.LENGTH_SHORT).show()
                         val user = userSnap.getValue(UserModel::class.java)

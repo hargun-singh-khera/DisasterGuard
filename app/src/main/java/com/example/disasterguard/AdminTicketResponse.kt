@@ -104,7 +104,7 @@ class AdminTicketResponse : AppCompatActivity() {
             finish()
         }
 
-        dbRef = FirebaseDatabase.getInstance().getReference("Users").child(userId!!).child("Requests")
+        dbRef = FirebaseDatabase.getInstance().getReference("Users").child(userId)
         setValuesToView()
         
         btnSubmit.setOnClickListener {
@@ -118,8 +118,10 @@ class AdminTicketResponse : AppCompatActivity() {
             Toast.makeText(this@AdminTicketResponse, "Please enter a response", Toast.LENGTH_SHORT).show()
         }
         else {
-            val request = RequestModel(userId, ticketId, incidentType, incidentDesc, incidentLocation, incidentDate, incidentTime, emergencyLevel, submissionDate,true)
-            dbRef.child(ticketId!!).setValue(request).addOnSuccessListener {
+            val updates = HashMap<String, Any>()
+            updates["reqCompleted"] = true
+
+            dbRef.child("Requests").child(ticketId!!).updateChildren(updates).addOnSuccessListener {
                 Toast.makeText(this, "Your response has been recorded successfully", Toast.LENGTH_SHORT).show()
                 finish()
             }.addOnFailureListener{ error ->
@@ -162,7 +164,7 @@ class AdminTicketResponse : AppCompatActivity() {
     }
     
     private fun getUserDetails() {
-        dbRef.child(ticketId).addListenerForSingleValueEvent(object: ValueEventListener {
+        dbRef.child("Requests").child(ticketId).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val ticketData = snapshot.getValue(RequestModel::class.java)

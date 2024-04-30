@@ -107,7 +107,6 @@ class ProfileFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
         userId = auth.currentUser?.uid!!
-//        Toast.makeText(requireContext(), "UserId: ${userId}", Toast.LENGTH_SHORT).show()
 
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
         sharedPreferences = requireActivity().getSharedPreferences(fileName, Context.MODE_PRIVATE)
@@ -125,10 +124,8 @@ class ProfileFragment : Fragment() {
         getUserData()
 
         editProfileButton.setOnClickListener {
-//            inEditMode = !inEditMode
             if (inEditMode) {
                 inEditMode = false
-//                Toast.makeText(requireContext(), "inEditMode1: ${inEditMode}", Toast.LENGTH_SHORT).show()
                 editProfileButton.text = "Edit Profile"
 
                 nameEditText.isEnabled = false
@@ -141,16 +138,10 @@ class ProfileFragment : Fragment() {
                 val email = emailEditText.text.toString()
                 val mobile = mobileEditText.text.toString()
 
-//                Toast.makeText(requireContext(), "Email: ${email}", Toast.LENGTH_SHORT).show()
-//                Toast.makeText(requireContext(), "Mobile: ${mobile}", Toast.LENGTH_SHORT).show()
-
                 btnUpload.visibility = View.GONE
-
-//                Toast.makeText(requireContext(), "Uploading your image...", Toast.LENGTH_SHORT).show()
                 updateUserDetails(name, email, mobile)
             } else {
                 inEditMode = true
-//                Toast.makeText(requireContext(), "inEditMode2: ${inEditMode}", Toast.LENGTH_SHORT).show()
                 editProfileButton.text = "Save Profile"
 
                 nameEditText.isEnabled = true
@@ -163,7 +154,6 @@ class ProfileFragment : Fragment() {
                 btnUpload.visibility = View.VISIBLE
                 btnUpload.setOnClickListener {
                     getImage.launch("image/*")
-
                 }
             }
         }
@@ -176,9 +166,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getUserImage() {
-//        Toast.makeText(requireContext(), "Inside of get User Image", Toast.LENGTH_SHORT).show()
-//        val currentUserId = auth.currentUser?.uid
-//        Toast.makeText(requireContext(), "Id: ${currentUserId}", Toast.LENGTH_SHORT).show()
         showProgressBar()
         progressDialog.setTitle("Please Wait")
         progressDialog.setMessage("Loading your profile image...")
@@ -206,7 +193,6 @@ class ProfileFragment : Fragment() {
             hideProgressBar()
         } .addOnFailureListener {
             hideProgressBar()
-//            Toast.makeText(requireContext(), "Failed to retrieve the image", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -230,9 +216,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun uploadImage() {
-//        Toast.makeText(requireContext(), "Inside of Upload Image", Toast.LENGTH_SHORT).show()
         if (fileUri != null) {
-//            Toast.makeText(requireContext(), "FileUri not null", Toast.LENGTH_SHORT).show()
             showProgressBar()
             if (userId != null) {
                 ref = FirebaseStorage.getInstance().getReference("Users/Image").child(userId)
@@ -247,7 +231,6 @@ class ProfileFragment : Fragment() {
         }
         else {
             hideProgressBar()
-//            Toast.makeText(requireContext(), "File uri null found", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -256,10 +239,12 @@ class ProfileFragment : Fragment() {
         edit.putString("userName", name)
         edit.apply()
 
-//        Toast.makeText(requireContext(), "Name: ${name}", Toast.LENGTH_SHORT).show()
+        val updates = HashMap<String, Any>()
+        updates["userName"] = name
+        updates["userEmail"] = email
+        updates["userMobileNumber"] = mobile
 
-        val user = UserModel(userId, name, email, mobile, false)
-        dbRef.child(userId).setValue(user).addOnCompleteListener {
+        dbRef.child(userId).updateChildren(updates).addOnCompleteListener {
             if (it.isSuccessful) {
                 uploadImage()
                 Toast.makeText(requireContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show()
@@ -297,12 +282,9 @@ class ProfileFragment : Fragment() {
 
     fun getUserData() {
         hideView()
-//        Toast.makeText(requireContext(), "Acquiring User Info", Toast.LENGTH_SHORT).show()
-//        Toast.makeText(requireContext(), "User Id: ${userId}", Toast.LENGTH_SHORT).show()
         dbRef.child(userId).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-//                    Toast.makeText(requireContext(), "Snapshot exists", Toast.LENGTH_SHORT).show()
                     for (userSnap in snapshot.children) {
                         val user = snapshot.getValue(UserModel::class.java)
                         userName = user?.userName!!
@@ -313,7 +295,6 @@ class ProfileFragment : Fragment() {
                         emailEditText.setText(userEmail)
                         mobileEditText.setText(userMobileNumber)
 
-//                        Toast.makeText(requireContext(), "Values set", Toast.LENGTH_SHORT).show()
                         showView()
                     }
                 }
