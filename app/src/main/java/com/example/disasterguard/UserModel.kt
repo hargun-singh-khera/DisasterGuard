@@ -5,5 +5,6 @@ data class UserModel(
     var userName: String?= null,
     var userEmail: String?= null,
     var userMobileNumber: String?= null,
-    var userAdmin: Boolean?= false
+    var userAdmin: Boolean?= false,
+    var superUser: Boolean ?= false
 )

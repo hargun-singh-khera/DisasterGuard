@@ -1,10 +1,12 @@
 package com.example.disasterguard
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.renderscript.Sampler.Value
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -31,6 +33,9 @@ class AdminDashboard : AppCompatActivity() {
     lateinit var userCount: TextView
     lateinit var progressDialog: ProgressDialog
     lateinit var valueEventListener: ValueEventListener
+    lateinit var userId: String
+    var superUserExists: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_dashboard)
@@ -39,6 +44,7 @@ class AdminDashboard : AppCompatActivity() {
         cardViewTicketManagement = findViewById(R.id.cardViewTicketManagement)
         cardViewUserManagement = findViewById(R.id.cardViewUserManagement)
         sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE)
+        userId = auth.currentUser?.uid!!
 
         ticketCount = findViewById(R.id.ticketCount)
 
@@ -93,6 +99,9 @@ class AdminDashboard : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         when(id) {
+            R.id.notification -> {
+                startActivity(Intent(this, AdminNotifications::class.java))
+            }
             R.id.logout -> {
                 logoutAlert()
             }
@@ -126,21 +135,43 @@ class AdminDashboard : AppCompatActivity() {
 
     fun getUserCount() {
         var count:Long = 0
-        dbRef = FirebaseDatabase.getInstance().getReference("Users")
-        val dbQuery = dbRef.orderByChild("userAdmin").equalTo(false)
-        dbQuery.addValueEventListener(object: ValueEventListener {
+        dbRef = FirebaseDatabase.getInstance().getReference("Users").child(userId)
+        dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    count = snapshot.childrenCount
-                    userCount.text = count.toString()
-                    hideProgressBar()
+                    val userData = snapshot.getValue(UserModel::class.java)
+                    superUserExists = userData?.superUser!!
+                    if (superUserExists) {
+                        dbRef.orderByChild("superUser").equalTo(false).addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                count = snapshot.childrenCount
+                                userCount.text = count.toString()
+                                hideProgressBar()
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+
+                            }
+                        })
+                    } else {
+                        dbRef.orderByChild("userAdmin").equalTo(false).addValueEventListener(object: ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                count = snapshot.childrenCount
+                                userCount.text = count.toString()
+                                hideProgressBar()
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+
+                            }
+                        })
+                    }
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
 
+            }
         })
     }
 
@@ -167,5 +198,25 @@ class AdminDashboard : AppCompatActivity() {
         val intent = Intent(this, LoginScreen::class.java)
         startActivity(intent)
         finish()
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        exitAlert()
+    }
+
+    fun exitAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure you want to close this app?")
+        builder.setTitle("Exit Alert!")
+        builder.setCancelable(false)
+        builder.setPositiveButton("Yes") {
+                dialog, which -> finish()
+        }
+        builder.setNegativeButton("No") {
+                dialog, which -> dialog.cancel()
+        }
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 }

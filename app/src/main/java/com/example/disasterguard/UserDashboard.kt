@@ -1,5 +1,6 @@
 package com.example.disasterguard
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -95,9 +96,9 @@ class UserDashboard : AppCompatActivity() {
         alertDialog.show()
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-//        exitAlert()
-        super.onBackPressed()
+        exitAlert()
     }
 
     fun exitAlert() {
@@ -131,9 +132,6 @@ class UserDashboard : AppCompatActivity() {
             }
             R.id.rate -> {
                 bottomNavigationView.selectedItemId = R.id.rate
-            }
-            R.id.psensor -> {
-                startActivity(Intent(this@UserDashboard, ProximitySensor::class.java))
             }
             R.id.logout -> {
                 logoutAlert()

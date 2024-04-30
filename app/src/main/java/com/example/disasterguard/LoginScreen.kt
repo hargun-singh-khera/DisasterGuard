@@ -151,11 +151,11 @@ class LoginScreen : AppCompatActivity() {
                         editor.putString("userName", user?.userName)
                         editor.apply()
                         if (isAdmin!!) {
-                            Toast.makeText(this@LoginScreen, "Admin User", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this@LoginScreen, "Admin User", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginScreen, AdminDashboard::class.java))
                             finish()
                         } else {
-                            Toast.makeText(this@LoginScreen, "Normal User", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this@LoginScreen, "Normal User", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginScreen, UserDashboard::class.java))
                             finish()
                         }

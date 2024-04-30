@@ -19,9 +19,6 @@
         android:id="@+id/rate"
         android:title="Rate Us" />
 
-    <item
-        android:id="@+id/psensor"
-        android:title="Proximity Sensor" />
 
     <item
         android:id="@+id/logout"
