@@ -104,8 +104,6 @@ class AdminTicketResponse : AppCompatActivity() {
             finish()
         }
 
-
-
         dbRef = FirebaseDatabase.getInstance().getReference("Users").child(userId!!).child("Requests")
         setValuesToView()
         

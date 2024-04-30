@@ -219,7 +219,6 @@ class SupportTicket : AppCompatActivity() {
         }
         else {
             val currentDate = DateFormat.getDateInstance().format(cal.time)
-            Toast.makeText(this@SupportTicket, "Submission Date: $currentDate", Toast.LENGTH_SHORT).show()
             val editor = sharedPreferences.edit()
             editor.putString("submissionDate", currentDate)
             editor.apply()

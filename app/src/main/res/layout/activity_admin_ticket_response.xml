@@ -174,7 +174,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginStart="10dp"
-                        android:layout_marginRight="10dp">
+                        android:layout_marginEnd="10dp">
                         <TextView
                             android:id="@+id/tvProblemDesc"
                             android:layout_width="wrap_content"
@@ -201,6 +201,7 @@
                             android:id="@+id/tvSubmitted"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
                             android:layout_below="@+id/imageView"
                             android:text="Submitted on: January 15, 2022" />
 

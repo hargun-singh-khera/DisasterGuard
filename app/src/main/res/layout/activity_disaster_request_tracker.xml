@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="1dp"
                 android:layout_marginBottom="1dp"
-                tools:listitem="@layout/ticket_item"/>
+                tools:listitem="@layout/user_ticket_item"/>
         </RelativeLayout>
     </ScrollView>
 

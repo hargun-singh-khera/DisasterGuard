@@ -27,9 +27,9 @@ class UserTicketAdapter(val context: Context, val resource: Int, val objects: Ar
         val tvLocation = itemView.findViewById<TextView>(R.id.tvLocation)
         val tvDate = itemView.findViewById<TextView>(R.id.tvDate)
         val tvTime = itemView.findViewById<TextView>(R.id.tvTime)
+        val tvStatus = itemView.findViewById<TextView>(R.id.tvStatus)
         val btnEdit = itemView.findViewById<ImageView>(R.id.btnEdit)
         val btnDelete = itemView.findViewById<ImageView>(R.id.btnDelete)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,6 +53,16 @@ class UserTicketAdapter(val context: Context, val resource: Int, val objects: Ar
         val incidentDate = myObj.incidentDate!!
         val incidentTime = myObj.incidentTime!!
         val emergencyLevel = myObj.emergencyLevel
+        val reqCompleted = myObj.reqCompleted
+
+        if (reqCompleted == true) {
+            holder.tvStatus.text = "Completed"
+            holder.tvStatus.setTextColor(Color.parseColor("#80FF00"))
+            holder.btnEdit.visibility = View.GONE
+            holder.btnDelete.visibility = View.GONE
+        } else {
+            holder.tvStatus.text = "In Progress"
+        }
 
         if (emergencyLevel == "High") {
             holder.tvEmergencyLevelStatus.setTextColor(Color.parseColor("#FF001E"))
@@ -62,12 +72,12 @@ class UserTicketAdapter(val context: Context, val resource: Int, val objects: Ar
             holder.tvEmergencyLevelStatus.setTextColor(Color.parseColor("#44F305"))
         }
 
-        holder.tvHeading.text = "${myObj.incidentType} Incident"
+        holder.tvHeading.text = "${incidentType} Incident"
         holder.tvEmergencyLevelStatus.text = "${emergencyLevel}"
-        holder.tvProblemDesc.text = "${myObj.incidentDesc}"
-        holder.tvLocation.text = "Location: ${myObj.incidentLocation}"
-        holder.tvDate.text = "Date: ${myObj.incidentDate}"
-        holder.tvTime.text = "Time: ${myObj.incidentTime}"
+        holder.tvProblemDesc.text = "${incidentDesc}"
+        holder.tvLocation.text = "Location: ${incidentLocation}"
+        holder.tvDate.text = "Date: ${incidentDate}"
+        holder.tvTime.text = "Time: ${incidentTime}"
 
         holder.btnEdit.setOnClickListener {
             val intent = Intent(context, DisasterRequestUpdate::class.java)
@@ -78,6 +88,7 @@ class UserTicketAdapter(val context: Context, val resource: Int, val objects: Ar
             intent.putExtra("incidentLocation", incidentLocation)
             intent.putExtra("incidentDate", incidentDate)
             intent.putExtra("incidentTime", incidentTime)
+            intent.putExtra("emergencyLevel", emergencyLevel)
             context.startActivity(intent)
         }
 
