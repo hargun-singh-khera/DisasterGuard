@@ -8,6 +8,7 @@ data class RequestModel (
     var incidentLocation: String ?= null,
     var incidentDate: String ?= null,
     var incidentTime: String ?= null,
+    var remarks: String ?= null,
     var emergencyLevel: String ?= null,
     var submissionDate: String ?= null,
     var reqCompleted: Boolean ?= false

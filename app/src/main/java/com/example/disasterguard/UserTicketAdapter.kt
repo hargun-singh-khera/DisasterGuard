@@ -30,6 +30,8 @@ class UserTicketAdapter(val context: Context, val resource: Int, val objects: Ar
         val tvStatus = itemView.findViewById<TextView>(R.id.tvStatus)
         val btnEdit = itemView.findViewById<ImageView>(R.id.btnEdit)
         val btnDelete = itemView.findViewById<ImageView>(R.id.btnDelete)
+        val tvRequestId = itemView.findViewById<TextView>(R.id.tvRequestId)
+        val tvRemarks = itemView.findViewById<TextView>(R.id.tvRemarks)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,12 +56,14 @@ class UserTicketAdapter(val context: Context, val resource: Int, val objects: Ar
         val incidentTime = myObj.incidentTime!!
         val emergencyLevel = myObj.emergencyLevel
         val reqCompleted = myObj.reqCompleted
+        val remarks = myObj.remarks
 
         if (reqCompleted == true) {
             holder.tvStatus.text = "Completed"
             holder.tvStatus.setTextColor(Color.parseColor("#80FF00"))
             holder.btnEdit.visibility = View.GONE
             holder.btnDelete.visibility = View.GONE
+            holder.tvRemarks.visibility = View.VISIBLE
         } else {
             holder.tvStatus.text = "In Progress"
         }
@@ -72,12 +76,14 @@ class UserTicketAdapter(val context: Context, val resource: Int, val objects: Ar
             holder.tvEmergencyLevelStatus.setTextColor(Color.parseColor("#44F305"))
         }
 
+        holder.tvRequestId.text = "Request ID: ${ticketId}"
         holder.tvHeading.text = "${incidentType} Incident"
         holder.tvEmergencyLevelStatus.text = "${emergencyLevel}"
         holder.tvProblemDesc.text = "${incidentDesc}"
         holder.tvLocation.text = "Location: ${incidentLocation}"
         holder.tvDate.text = "Date: ${incidentDate}"
         holder.tvTime.text = "Time: ${incidentTime}"
+        holder.tvRemarks.text = "Remarks: ${remarks}"
 
         holder.btnEdit.setOnClickListener {
             val intent = Intent(context, DisasterRequestUpdate::class.java)

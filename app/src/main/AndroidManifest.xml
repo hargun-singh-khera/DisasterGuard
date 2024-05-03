@@ -18,6 +18,9 @@
         android:theme="@style/Theme.DisasterGuard"
         tools:targetApi="31">
         <activity
+            android:name=".AdminTrackTicketHistory"
+            android:exported="false" />
+        <activity
             android:name=".AdminNotifications"
             android:exported="false" />
         <activity

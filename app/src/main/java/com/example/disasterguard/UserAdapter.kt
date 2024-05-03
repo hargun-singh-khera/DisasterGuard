@@ -1,6 +1,5 @@
 package com.example.disasterguard
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class UserAdapter(val context: Context, val resource: Int, val objects: ArrayList<UserModel>, var dbRef: DatabaseReference) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+class UserAdapter(val context: Context, val resource: Int, val objects: ArrayList<UserModel>, var dbRef: DatabaseReference): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
     lateinit var auth: FirebaseAuth
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {

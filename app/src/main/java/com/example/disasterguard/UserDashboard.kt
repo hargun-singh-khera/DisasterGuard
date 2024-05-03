@@ -196,7 +196,7 @@ class UserDashboard : AppCompatActivity() {
     fun shareApp() {
         val intent = Intent(Intent.ACTION_SEND)
         intent.setType("text/plain")
-        intent.putExtra(Intent.EXTRA_TEXT,"https://drive.google.com/file/d/1OiTAvjIXveHQBSxWcrPkcW78Q7Xj5vxK/view?usp=sharing")
+        intent.putExtra(Intent.EXTRA_TEXT,"https://drive.google.com/file/d/1OiTAvjIXveHQBSxWcrPkcW78Q7Xj5vxK/view?usp=drive_link")
         startActivity(Intent.createChooser(intent, "Share Link!"))
     }
 

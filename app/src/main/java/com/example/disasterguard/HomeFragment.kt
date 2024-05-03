@@ -49,8 +49,6 @@ class HomeFragment : Fragment() {
         val userName = sharedPreferences.getString("userName", "")
         tvUserName.text = "Hi, " + userName.toString()
 
-//        Toast.makeText(requireContext(), "${auth.currentUser?.email}", Toast.LENGTH_SHORT).show()
-
         cardViewSupportTicket = view.findViewById(R.id.cardViewSupportTicket)
         cardViewSupportTicket.setOnClickListener {
             startActivity(Intent(requireContext(), SupportTicket::class.java))
@@ -70,7 +68,5 @@ class HomeFragment : Fragment() {
 
         return view
     }
-
-
 
 }

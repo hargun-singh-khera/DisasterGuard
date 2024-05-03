@@ -235,7 +235,7 @@ class RegisterScreen : AppCompatActivity() {
 //        Toast.makeText(this@RegisterScreen, "Verify otp method", Toast.LENGTH_SHORT).show()
         var number = etMobileNumber.text.trim().toString()
         // get the phone number and append the country cde with it
-        number = "+1$number"
+        number = "+91$number"
 //        Toast.makeText(this@RegisterScreen, "Number: ${number}", Toast.LENGTH_SHORT).show()
 //        Toast.makeText(this@RegisterScreen, "Calling send verification code", Toast.LENGTH_SHORT).show()
         sendVerificationCode(number)

@@ -26,11 +26,13 @@ class AdminDashboard : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var cardViewTicketManagement: CardView
     lateinit var cardViewUserManagement: CardView
+    lateinit var cardViewTicketHistory: CardView
     lateinit var sharedPreferences: SharedPreferences
     var fileName = "userType"
     lateinit var dbRef: DatabaseReference
     lateinit var ticketCount: TextView
     lateinit var userCount: TextView
+    lateinit var ticketHistoryCount: TextView
     lateinit var progressDialog: ProgressDialog
     lateinit var valueEventListener: ValueEventListener
     lateinit var userId: String
@@ -43,15 +45,18 @@ class AdminDashboard : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         cardViewTicketManagement = findViewById(R.id.cardViewTicketManagement)
         cardViewUserManagement = findViewById(R.id.cardViewUserManagement)
+        cardViewTicketHistory = findViewById(R.id.cardViewTicketHistory)
         sharedPreferences = getSharedPreferences(fileName, Context.MODE_PRIVATE)
         userId = auth.currentUser?.uid!!
 
         ticketCount = findViewById(R.id.ticketCount)
 
         userCount = findViewById(R.id.userCount)
-        getUserCount()
+        ticketHistoryCount = findViewById(R.id.ticketHistoryCount)
 
+        getUserCount()
         showProgressBar()
+        getTotalTicketCounts()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.setTitle("Dashboard")
@@ -63,6 +68,10 @@ class AdminDashboard : AppCompatActivity() {
 
         cardViewUserManagement.setOnClickListener {
             startActivity(Intent(this, AdminUserManagement::class.java))
+        }
+
+        cardViewTicketHistory.setOnClickListener {
+            startActivity(Intent(this, AdminTrackTicketHistory::class.java))
         }
 
         // Declare the ValueEventListener as a member variable
@@ -167,6 +176,27 @@ class AdminDashboard : AppCompatActivity() {
                         })
                     }
                 }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
+    private fun getTotalTicketCounts() {
+        var count: Long = 0
+        dbRef = FirebaseDatabase.getInstance().getReference("Users")
+        dbRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (userSnap in snapshot.children) {
+                        val requestsNode = userSnap.child("Requests")
+                        count += requestsNode.childrenCount
+                    }
+                    ticketHistoryCount.text = "$count"
+                }
+
             }
 
             override fun onCancelled(error: DatabaseError) {

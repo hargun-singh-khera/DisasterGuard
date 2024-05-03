@@ -120,7 +120,7 @@ class AdminTicketResponse : AppCompatActivity() {
         else {
             val updates = HashMap<String, Any>()
             updates["reqCompleted"] = true
-
+            updates["remarks"] = remarks
             dbRef.child("Requests").child(ticketId!!).updateChildren(updates).addOnSuccessListener {
                 Toast.makeText(this, "Your response has been recorded successfully", Toast.LENGTH_SHORT).show()
                 finish()
