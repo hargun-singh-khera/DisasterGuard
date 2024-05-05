@@ -262,7 +262,7 @@ class SupportTicket : AppCompatActivity() {
                         if (userAdmin) {
                             val notificationRef = dbRef.child(userId).child("AdminNotifications")
                             val notificationId = notificationRef.push().key!!
-                            val notification = AdminNotificationModel(currentUserId, userName)
+                            val notification = AdminNotificationModel(currentUserId, ticketId, userName)
                             notificationRef.child(notificationId).setValue(notification).addOnCompleteListener {
                                 if (it.isSuccessful) {
                                     Toast.makeText(this@SupportTicket, "Your request has been received as notification.", Toast.LENGTH_SHORT).show()

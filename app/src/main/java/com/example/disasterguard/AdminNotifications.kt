@@ -62,13 +62,11 @@ class AdminNotifications : AppCompatActivity() {
                     for (userSnap in snapshot.children) {
                         val user = userSnap.getValue(UserModel::class.java)
                         val userAdmin = user?.userAdmin!!
-                        val userId = user.userId!!
                         if (userAdmin) {
                             val notificationRef = userSnap.child("AdminNotifications")
                             for (notificationSnap in notificationRef.children) {
                                 val notification = notificationSnap.getValue(AdminNotificationModel::class.java)
-                                ref = FirebaseStorage.getInstance().getReference("Users/Image")
-                                val mAdapter = AdminNotificationAdapter(this@AdminNotifications, R.layout.admin_notification, notificationList, ref)
+                                val mAdapter = AdminNotificationAdapter(this@AdminNotifications, R.layout.admin_notification, notificationList)
                                 recyclerView.adapter = mAdapter
 
                                 progressBar.visibility = View.GONE

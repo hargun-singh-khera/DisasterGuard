@@ -194,6 +194,10 @@ class AdminDashboard : AppCompatActivity() {
                 if (snapshot.exists()) {
                     for (userSnap in snapshot.children) {
                         val requestsNode = userSnap.child("Requests")
+                        if (!requestsNode.exists()) {
+                            ticketHistoryCount.text = "$count"
+                            return
+                        }
                         for (requestSnap in requestsNode.children) {
                             val reqCompletedRef = requestSnap.child("reqCompleted").ref
                             reqCompletedRef.addValueEventListener(object: ValueEventListener {

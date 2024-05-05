@@ -66,12 +66,19 @@ class AdminTrackTicketHistory : AppCompatActivity() {
                             }
                         }
                     }
-                    val mAdapter = TicketHistoryAdapter(this@AdminTrackTicketHistory, R.layout.admin_ticket_history_item, ticketList)
-                    recyclerView.adapter = mAdapter
+                    if (ticketList.isEmpty()) {
+                        progressBar.visibility = View.GONE
+                        tvLoadingData.visibility = View.VISIBLE
+                        tvLoadingData.text = "No Record Found."
+                    } else {
+                        val mAdapter = TicketHistoryAdapter(this@AdminTrackTicketHistory, R.layout.admin_ticket_history_item, ticketList)
+                        recyclerView.adapter = mAdapter
 
-                    progressBar.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                    tvLoadingData.visibility = View.GONE
+                        progressBar.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        tvLoadingData.visibility = View.GONE
+                    }
+
                 } else {
                     progressBar.visibility = View.GONE
                     tvLoadingData.visibility = View.VISIBLE

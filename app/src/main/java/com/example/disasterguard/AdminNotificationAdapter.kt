@@ -28,10 +28,11 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.File
 
-class AdminNotificationAdapter(val context: Context, val resource: Int, val objects: ArrayList<AdminNotificationModel>, private var ref: StorageReference) : RecyclerView.Adapter<AdminNotificationAdapter.ViewHolder>() {
+class AdminNotificationAdapter(val context: Context, val resource: Int, val objects: ArrayList<AdminNotificationModel>) : RecyclerView.Adapter<AdminNotificationAdapter.ViewHolder>() {
     lateinit var bitmap: Bitmap
     lateinit var progressDialog: ProgressDialog
     lateinit var dbRef: DatabaseReference
+    lateinit var ref: StorageReference
 
     lateinit var incidentType: String
     lateinit var incidentDesc: String
@@ -41,7 +42,6 @@ class AdminNotificationAdapter(val context: Context, val resource: Int, val obje
     lateinit var emergencyLevel: String
     lateinit var submissionDate: String
 
-    var isDataPopulated: Boolean ?= false
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvUserName = itemView.findViewById<TextView>(R.id.tvUserName)
         val btnView = itemView.findViewById<Button>(R.id.btnView)
@@ -108,32 +108,40 @@ class AdminNotificationAdapter(val context: Context, val resource: Int, val obje
             context.startActivity(intent)
         }
 
+        showView(holder)
 
-        ref = ref.child(userId!!)
-        val localFile = File.createTempFile("tempImage", "jpg")
-        ref.getFile(localFile).addOnSuccessListener {
-            bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-            Log.d("Bitmap2", bitmap.toString())
-
-            val exif = ExifInterface(localFile.absolutePath)
-            val orientation = exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
-            )
-
-            // Rotate the bitmap if needed
-            bitmap = when (orientation) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
-                ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
-                ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
-                else -> bitmap
-            }
-
-            holder.profileImage.setImageBitmap(bitmap)
-            showView(holder)
-        }
-
+//        getUserImage(holder, userId)
     }
+
+//    private fun getUserImage(holder: ViewHolder, userId: String) {
+//        showProgressBar()
+//
+//        ref = FirebaseStorage.getInstance().getReference("Users/Image").child(userId)
+//        val localFile = File.createTempFile("tempImage", "jpg")
+//        ref.getFile(localFile).addOnSuccessListener {
+//            bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+//            Log.d("Bitmap2", bitmap.toString())
+//
+//            val exif = ExifInterface(localFile.absolutePath)
+//            val orientation = exif.getAttributeInt(
+//                ExifInterface.TAG_ORIENTATION,
+//                ExifInterface.ORIENTATION_UNDEFINED
+//            )
+//
+//            // Rotate the bitmap if needed
+//            bitmap = when (orientation) {
+//                ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
+//                ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
+//                ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
+//                else -> bitmap
+//            }
+//
+//            holder.profileImage.setImageBitmap(bitmap)
+//            hideProgressBar()
+//        } .addOnFailureListener {
+//            hideProgressBar()
+//        }
+//    }
 
     // Function to rotate the bitmap
     fun rotateBitmap(source: Bitmap, angle: Float): Bitmap {
