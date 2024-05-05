@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminNotifications">
+    tools:context=".UserNotifications">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="1dp"
                 android:layout_marginBottom="1dp"
-                tools:listitem="@layout/admin_notification" />
+                tools:listitem="@layout/user_notification" />
 
         </RelativeLayout>
     </ScrollView>

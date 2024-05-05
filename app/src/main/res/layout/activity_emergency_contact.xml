@@ -96,8 +96,8 @@
 
                         <ImageView
                             android:id="@+id/callPolice"
-                            android:layout_width="40dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/baseline_call_24" />
                     </LinearLayout>
                 </LinearLayout>
@@ -159,8 +159,8 @@
 
                         <ImageView
                             android:id="@+id/callFire"
-                            android:layout_width="40dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/baseline_call_24" />
                     </LinearLayout>
                 </LinearLayout>
@@ -222,8 +222,8 @@
 
                         <ImageView
                             android:id="@+id/callMedical"
-                            android:layout_width="40dp"
-                            android:layout_height="35dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:src="@drawable/baseline_call_24" />
                     </LinearLayout>
                 </LinearLayout>

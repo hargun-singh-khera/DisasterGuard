@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,65 +15,67 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
-class AdminTrackTicketHistory : AppCompatActivity() {
+class UserNotifications : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var tvLoadingData: TextView
     private lateinit var progressBar: ProgressBar
-    private lateinit var ticketList: ArrayList<RequestModel>
+    private lateinit var notificationList: ArrayList<UserNotificationModel>
     private lateinit var dbRef: DatabaseReference
     lateinit var auth: FirebaseAuth
-    lateinit var userId: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin_track_ticket_history)
+        setContentView(R.layout.activity_user_notifications)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle("Tickets History")
+        toolbar.setTitle("Notifications")
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             finish()
         }
 
+        getAllNotifications()
+    }
+
+    private fun getAllNotifications() {
         recyclerView = findViewById(R.id.recyclerView)
         tvLoadingData = findViewById(R.id.tvLoadingData)
         progressBar = findViewById(R.id.progressBar)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         auth = FirebaseAuth.getInstance()
-        userId = auth.currentUser?.uid!!
+        val userId = auth.currentUser?.uid
 
-        ticketList = arrayListOf<RequestModel>()
-        getAllTickets()
+        notificationList = arrayListOf<UserNotificationModel>()
+        dbRef = FirebaseDatabase.getInstance().getReference("Users").child(userId!!)
 
-    }
-
-    private fun getAllTickets() {
         progressBar.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
-        tvLoadingData.visibility = View.GONE
-        dbRef = FirebaseDatabase.getInstance().getReference("Users")
-        dbRef.addListenerForSingleValueEvent(object: ValueEventListener {
+        dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    ticketList.clear()
-                    for (userSnap in snapshot.children) {
-                        val requestsRef = userSnap.child("Requests")
-                        for (ticketSnap in requestsRef.children) {
-                            val ticket = ticketSnap.getValue(RequestModel::class.java)
-                            if (ticket?.reqCompleted == true) {
-                                ticketList.add(ticket)
-                            }
-                        }
-                    }
-                    val mAdapter = TicketHistoryAdapter(this@AdminTrackTicketHistory, R.layout.admin_ticket_history_item, ticketList)
-                    recyclerView.adapter = mAdapter
+                notificationList.clear()
+                if (snapshot.exists()){
+                    val notificationRef = snapshot.child("Notifications")
+                    for (notificationSnap in notificationRef.children) {
+                        val notification = notificationSnap.getValue(UserNotificationModel::class.java)
 
-                    progressBar.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                    tvLoadingData.visibility = View.GONE
-                } else {
+                        val mAdapter = UserNotificationAdapter(this@UserNotifications, R.layout.user_notification, notificationList)
+                        recyclerView.adapter = mAdapter
+
+                        progressBar.visibility = View.GONE
+                        tvLoadingData.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        notificationList.add(notification!!)
+                    }
+                    if (notificationList.isEmpty()) {
+                        progressBar.visibility = View.GONE
+                        tvLoadingData.visibility = View.VISIBLE
+                        tvLoadingData.text = "No Record Found."
+                    }
+                }
+                else {
                     progressBar.visibility = View.GONE
                     tvLoadingData.visibility = View.VISIBLE
                     tvLoadingData.text = "No Record Found."
@@ -80,8 +83,9 @@ class AdminTrackTicketHistory : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Toast.makeText(this@UserNotifications, "Failed to load tickets.", Toast.LENGTH_SHORT).show()
             }
         })
+
     }
 }

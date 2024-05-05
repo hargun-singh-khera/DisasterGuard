@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 
 class UserDashboard : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
@@ -83,6 +84,7 @@ class UserDashboard : AppCompatActivity() {
         }
     }
 
+
     fun showProximityAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage("We have detected that your device is very close to an object. Please take appropriate action to ensure the safety of your device.")
@@ -127,8 +129,11 @@ class UserDashboard : AppCompatActivity() {
             R.id.profile -> {
                 bottomNavigationView.selectedItemId = R.id.profile
             }
+            R.id.notification -> {
+                startActivity(Intent(this, UserNotifications::class.java))
+            }
             R.id.resetPassword -> {
-                startActivity(Intent(this@UserDashboard, ResetPassword::class.java))
+                startActivity(Intent(this, ResetPassword::class.java))
             }
             R.id.rate -> {
                 bottomNavigationView.selectedItemId = R.id.rate

@@ -20,6 +20,10 @@ import androidx.core.view.WindowInsetsCompat
 class SafetyTips : AppCompatActivity() {
     lateinit var animBlink: Animation
     lateinit var tvHeading: TextView
+    lateinit var tvHeading1: TextView
+    lateinit var tvHeading2: TextView
+    lateinit var tvHeading3: TextView
+
     lateinit var cardViewEarthquake: CardView
     lateinit var cardViewHurricane: CardView
     lateinit var cardViewFlood: CardView
@@ -31,6 +35,9 @@ class SafetyTips : AppCompatActivity() {
         setContentView(R.layout.activity_safety_tips)
 
         tvHeading = findViewById(R.id.tvHeading)
+        tvHeading1 = findViewById(R.id.tvHeading1)
+        tvHeading2 = findViewById(R.id.tvHeading2)
+        tvHeading3 = findViewById(R.id.tvHeading3)
         cardViewEarthquake = findViewById(R.id.cardViewEarthquake)
         cardViewHurricane = findViewById(R.id.cardViewHurricane)
         cardViewFlood = findViewById(R.id.cardViewFlood)
@@ -45,25 +52,30 @@ class SafetyTips : AppCompatActivity() {
             finish()
         }
 
+        val title1 = tvHeading1.text.toString()
+        val title2 = tvHeading2.text.toString()
+        val title3 = tvHeading3.text.toString()
+
 
         btnEarthquakeGuide.setOnClickListener {
-            startNewActivity("https://www.ready.gov/earthquakes")
+            startNewActivity(title1, "https://www.ready.gov/earthquakes")
         }
 
         btnFloodGuide.setOnClickListener {
-            startNewActivity("https://www.ready.gov/floods")
+            startNewActivity(title2,"https://www.ready.gov/floods")
         }
 
         btnHurricaneGuide.setOnClickListener {
-            startNewActivity("https://www.ready.gov/hurricanes")
+            startNewActivity(title3, "https://www.ready.gov/hurricanes")
         }
 
         showAnimation()
 
     }
 
-    private fun startNewActivity(url: String) {
+    private fun startNewActivity(title: String, url: String) {
         val intent = Intent(this, ShowGuides::class.java)
+        intent.putExtra("title", title)
         intent.putExtra("url", url)
         startActivity(intent)
     }

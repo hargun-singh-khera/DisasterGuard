@@ -7,10 +7,22 @@
     android:orientation="vertical"
     tools:context=".ShowGuides">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="Disaster Guides"
+        app:titleTextColor="@color/white"
+        android:background="@color/cyan"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:navigationIcon="?homeAsUpIndicator"
+        tools:ignore="MissingConstraints" />
+
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
         android:visibility="gone" />
 
     <ProgressBar

@@ -51,6 +51,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.android.gms:play-services-location:19.0.1")
     implementation(libs.firebase.storage)
+    implementation(libs.firebase.messaging)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -20,6 +20,10 @@ import androidx.core.view.WindowInsetsCompat
 class DisasterGuides : AppCompatActivity() {
     lateinit var animBlink: Animation
     lateinit var tvHeading: TextView
+    lateinit var tvHeading1: TextView
+    lateinit var tvHeading2: TextView
+    lateinit var tvHeading3: TextView
+
     lateinit var cardViewEarthquake: CardView
     lateinit var cardViewHurricane: CardView
     lateinit var cardViewFlood: CardView
@@ -31,6 +35,9 @@ class DisasterGuides : AppCompatActivity() {
         setContentView(R.layout.activity_disaster_guides)
 
         tvHeading = findViewById(R.id.tvHeading)
+        tvHeading1 = findViewById(R.id.tvHeading1)
+        tvHeading2 = findViewById(R.id.tvHeading2)
+        tvHeading3 = findViewById(R.id.tvHeading3)
         cardViewEarthquake = findViewById(R.id.cardViewEarthquake)
         cardViewHurricane = findViewById(R.id.cardViewHurricane)
         cardViewFlood = findViewById(R.id.cardViewFlood)
@@ -45,25 +52,29 @@ class DisasterGuides : AppCompatActivity() {
             finish()
         }
 
+        val title1 = tvHeading1.text.toString()
+        val title2 = tvHeading2.text.toString()
+        val title3 = tvHeading3.text.toString()
 
         btnEarthquakeGuide.setOnClickListener {
-            startNewActivity("https://www.cdc.gov/disasters/earthquakes/prepared.html")
+            startNewActivity(title1,"https://www.cdc.gov/disasters/earthquakes/prepared.html")
         }
 
         btnFloodGuide.setOnClickListener {
-            startNewActivity("https://www.cdc.gov/disasters/floods/readiness.html")
+            startNewActivity(title2,"https://www.cdc.gov/disasters/floods/readiness.html")
         }
 
         btnHurricaneGuide.setOnClickListener {
-            startNewActivity("https://www.cdc.gov/disasters/hurricanes/before.html")
+            startNewActivity(title3,"https://www.cdc.gov/disasters/hurricanes/before.html")
         }
 
         showAnimation()
 
     }
 
-    private fun startNewActivity(url: String) {
+    private fun startNewActivity(title: String, url: String) {
         val intent = Intent(this, ShowGuides::class.java)
+        intent.putExtra("title", title)
         intent.putExtra("url", url)
         startActivity(intent)
     }

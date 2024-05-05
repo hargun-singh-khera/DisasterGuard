@@ -1,11 +1,15 @@
 package com.example.disasterguard
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.ProgressDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -22,11 +26,16 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.text.DateFormat
@@ -48,6 +57,7 @@ class SupportTicket : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     private lateinit var dbRef: DatabaseReference
     lateinit var sharedPreferences: SharedPreferences
+
     private var userId: String?= null
     lateinit var ticketId: String
     val fileName = "userType"
@@ -95,7 +105,6 @@ class SupportTicket : AppCompatActivity() {
             getTime()
         }
 
-
         incidentDropdown()
 
         emergencyDropdown()
@@ -121,13 +130,11 @@ class SupportTicket : AppCompatActivity() {
 
     private fun uploadImage() {
         if (fileUri != null) {
-//            Toast.makeText(this@SupportTicket, "FileUri not null", Toast.LENGTH_SHORT).show()
             val progressDialog = ProgressDialog(this)
             progressDialog.setTitle("Please Wait")
             progressDialog.setMessage("Uploading your image...")
             progressDialog.show()
             if (userId != null) {
-//                Toast.makeText(this@SupportTicket, "Ticket id: ${ticketId}", Toast.LENGTH_SHORT).show()
                 val ref: StorageReference = FirebaseStorage.getInstance().getReference("Users/${userId}/Tickets/").child(ticketId)
                 ref.putFile(fileUri!!).addOnSuccessListener {
                     progressDialog.dismiss()
@@ -225,21 +232,51 @@ class SupportTicket : AppCompatActivity() {
 
             val submissionDate = currentDate.toString()
 
-            val ticket = RequestModel(userId, ticketId, optionIncident, description, location, date, time, optionEmergencyLevel, submissionDate)
+            val ticket = RequestModel(userId, ticketId, optionIncident, description, location, date, time, "", optionEmergencyLevel, submissionDate)
             dbRef.child(ticketId).setValue(ticket).addOnCompleteListener {
                 if (it.isSuccessful) {
                     uploadImage()
+                    sendNotificationToAdmin(userId!!, ticketId)
                     Toast.makeText(this@SupportTicket, "Your request has been received. Our team will get back to you shortly.", Toast.LENGTH_SHORT).show()
                     etDescription.text.clear()
                     etLocation.text.clear()
                     etDate.text.clear()
                     etTime.text.clear()
                 }
-
-//                finish()
             }.addOnFailureListener {
                 Toast.makeText(this@SupportTicket, "Error ${it.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+    private fun sendNotificationToAdmin(currentUserId: String, ticketId: String) {
+        dbRef = FirebaseDatabase.getInstance().getReference("Users")
+        dbRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (userSnap in snapshot.children) {
+                        val userData = userSnap.getValue(UserModel::class.java)
+                        val userId = userData?.userId!!
+                        val userName = userData.userName!!
+                        val userAdmin = userData.userAdmin!!
+                        if (userAdmin) {
+                            val notificationRef = dbRef.child(userId).child("AdminNotifications")
+                            val notificationId = notificationRef.push().key!!
+                            val notification = AdminNotificationModel(currentUserId, userName)
+                            notificationRef.child(notificationId).setValue(notification).addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    Toast.makeText(this@SupportTicket, "Your request has been received as notification.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
 }

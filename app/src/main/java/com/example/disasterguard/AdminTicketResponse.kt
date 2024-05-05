@@ -31,9 +31,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class AdminTicketResponse : AppCompatActivity() {
     lateinit var etResponse: EditText
@@ -121,13 +125,52 @@ class AdminTicketResponse : AppCompatActivity() {
             val updates = HashMap<String, Any>()
             updates["reqCompleted"] = true
             updates["remarks"] = remarks
-            dbRef.child("Requests").child(ticketId!!).updateChildren(updates).addOnSuccessListener {
+            dbRef.child("Requests").child(ticketId).updateChildren(updates).addOnSuccessListener {
                 Toast.makeText(this, "Your response has been recorded successfully", Toast.LENGTH_SHORT).show()
+                sendNotificationToUser(userId, ticketId)
                 finish()
             }.addOnFailureListener{ error ->
                 Toast.makeText(this, "Error while responding ${error.message}", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun sendNotificationToUser(currentUserId: String, ticketId: String) {
+        dbRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId)
+
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val userData = snapshot.getValue(UserModel::class.java)
+                    val userId = userData?.userId!!
+                    val date = getCurrentDate()
+
+                    val notificationRef = dbRef.child("Notifications")
+                    val notificationId = notificationRef.push().key!!
+                    val messageResponse = "Dear User, The resolution of your request/query has been provided. Check under Dashboard -> Track Requests section and give valuable feedback."
+                    val notification = UserNotificationModel(currentUserId, ticketId, messageResponse, date)
+
+                    notificationRef.child(notificationId).setValue(notification).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Assuming this code is inside an activity, change to your actual context
+                            Toast.makeText(this@AdminTicketResponse, "Your request has been received as notification.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle onCancelled event if needed
+            }
+        })
+    }
+
+
+
+    private fun getCurrentDate(): String {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        return dateFormat.format(calendar.time)
     }
 
     private fun setValuesToView() {

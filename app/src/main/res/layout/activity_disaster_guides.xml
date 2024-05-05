@@ -57,6 +57,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvHeading1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Earthquake Preparedness"
@@ -100,6 +101,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvHeading2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Flood Preparedness"
@@ -143,6 +145,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvHeading3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Hurricane Preparedness"

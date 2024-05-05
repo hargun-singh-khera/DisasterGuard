@@ -64,7 +64,7 @@ class TicketAdapter(val context: Context, val resource: Int, val objects: ArrayL
         }
 
         holder.tvHeading.text = "${myObj.incidentType} Incident"
-        holder.tvEmergencyLevelStatus.text = "${myObj.emergencyLevel}"
+//        holder.tvEmergencyLevelStatus.text = "${myObj.emergencyLevel}"
         holder.tvProblemDesc.text = "${myObj.incidentDesc}"
         holder.tvLocation.text = "Location: ${myObj.incidentLocation}"
         holder.tvDate.text = "Date: ${myObj.incidentDate}"

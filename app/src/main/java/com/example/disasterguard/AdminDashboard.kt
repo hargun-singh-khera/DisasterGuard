@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -185,22 +186,36 @@ class AdminDashboard : AppCompatActivity() {
     }
 
     private fun getTotalTicketCounts() {
-        var count: Long = 0
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
         dbRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            var count: Long = 0
+
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     for (userSnap in snapshot.children) {
                         val requestsNode = userSnap.child("Requests")
-                        count += requestsNode.childrenCount
-                    }
-                    ticketHistoryCount.text = "$count"
-                }
+                        for (requestSnap in requestsNode.children) {
+                            val reqCompletedRef = requestSnap.child("reqCompleted").ref
+                            reqCompletedRef.addValueEventListener(object: ValueEventListener {
+                                override fun onDataChange(reqCompletedSnapshot: DataSnapshot) {
+                                    val reqCompleted = reqCompletedSnapshot.getValue(Boolean::class.java)
+                                    if (reqCompleted == true) {
+                                        count++
+                                        ticketHistoryCount.text = "$count"
+                                    }
+                                }
 
+                                override fun onCancelled(error: DatabaseError) {
+                                    // Handle onCancelled event
+                                }
+                            })
+                        }
+                    }
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                // Handle onCancelled event
             }
         })
     }

@@ -8,8 +8,10 @@ import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -19,6 +21,14 @@ class ShowGuides : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_guides)
+
+        val title = intent.getStringExtra("title").toString()
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setTitle(title)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
 
         webView = findViewById(R.id.webview)
         val webSettings: WebSettings = webView.settings
