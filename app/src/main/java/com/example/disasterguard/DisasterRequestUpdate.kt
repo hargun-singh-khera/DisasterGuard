@@ -252,7 +252,7 @@ class DisasterRequestUpdate : AppCompatActivity() {
 
             val submissionDate = currentDate.toString()
 
-            val ticket = RequestModel(userId, ticketId, optionIncident, description, location, date, time, optionEmergencyLevel, submissionDate)
+            val ticket = RequestModel(userId, ticketId, optionIncident, description, location, date, time, "", optionEmergencyLevel, submissionDate)
             dbRef.child(ticketId).setValue(ticket).addOnCompleteListener {
                 if (it.isSuccessful) {
                     uploadImage()

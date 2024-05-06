@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class TicketAdapter(val context: Context, val resource: Int, val objects: ArrayList<RequestModel>) : RecyclerView.Adapter<TicketAdapter.ViewHolder>() {
@@ -64,7 +65,7 @@ class TicketAdapter(val context: Context, val resource: Int, val objects: ArrayL
         }
 
         holder.tvHeading.text = "${myObj.incidentType} Incident"
-//        holder.tvEmergencyLevelStatus.text = "${myObj.emergencyLevel}"
+        holder.tvEmergencyLevelStatus.text = "${myObj.emergencyLevel}"
         holder.tvProblemDesc.text = "${myObj.incidentDesc}"
         holder.tvLocation.text = "Location: ${myObj.incidentLocation}"
         holder.tvDate.text = "Date: ${myObj.incidentDate}"

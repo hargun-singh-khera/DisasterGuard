@@ -28,7 +28,6 @@ class AdminNotifications : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var notificationList: ArrayList<AdminNotificationModel>
     private lateinit var dbRef: DatabaseReference
-    lateinit var ref: StorageReference
     lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +54,8 @@ class AdminNotifications : AppCompatActivity() {
         notificationList = arrayListOf<AdminNotificationModel>()
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
 
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
         dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 notificationList.clear()
