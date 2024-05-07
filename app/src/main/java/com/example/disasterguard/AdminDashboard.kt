@@ -187,28 +187,20 @@ class AdminDashboard : AppCompatActivity() {
 
     private fun getTotalTicketCounts() {
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
-        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var count: Long = 0
-                var totalRequestsProcessed = 0
-                val totalRequests = snapshot.children.sumBy { it.child("Requests").childrenCount.toInt() }
-
-                if (totalRequests == 0) {
-                    ticketHistoryCount.text = "$count"
-                    return
-                }
-
                 for (userSnap in snapshot.children) {
                     val requestsNode = userSnap.child("Requests")
                     for (requestSnap in requestsNode.children) {
                         val reqCompletedRef = requestSnap.child("reqCompleted").ref
-                        reqCompletedRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        reqCompletedRef.addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(reqCompletedSnapshot: DataSnapshot) {
                                 val reqCompleted = reqCompletedSnapshot.getValue(Boolean::class.java)
                                 if (reqCompleted == true) {
                                     count++
-                                    ticketHistoryCount.text = "$count"
                                 }
+                                ticketHistoryCount.text = "$count"
                             }
 
                             override fun onCancelled(error: DatabaseError) {

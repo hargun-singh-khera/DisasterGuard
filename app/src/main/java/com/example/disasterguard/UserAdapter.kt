@@ -102,6 +102,30 @@ class UserAdapter(val context: Context, val resource: Int, val objects: ArrayLis
         }
 
         auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser?.uid!!
+
+        dbRef = dbRef.child(currentUser).child("AdminNotifications")
+        dbRef.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (notificationSnap in snapshot.children) {
+                        val notification = notificationSnap.getValue(AdminNotificationModel::class.java)
+                        if (notification?.userId == userId) {
+                            notificationSnap.ref.removeValue().addOnSuccessListener {
+
+                            }.addOnFailureListener { error ->
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+
 
     }
 
